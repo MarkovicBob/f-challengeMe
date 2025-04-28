@@ -1,8 +1,8 @@
 import { createContext, useContext, useState } from "react";
 
-const AuthContext = createContext();
+const GlobalContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const GlobalProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = () => {
@@ -17,10 +17,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <GlobalContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
-    </AuthContext.Provider>
+    </GlobalContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(GlobalContext);

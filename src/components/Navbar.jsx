@@ -1,5 +1,5 @@
 import AdminPanel from "./AdminPanel";
-import { useAuth } from "../Context/AuthProvider";
+import { useAuth } from "../Context/GlobalProvider";
 
 function Navbar() {
   const { isAuthenticated, login, logout } = useAuth();

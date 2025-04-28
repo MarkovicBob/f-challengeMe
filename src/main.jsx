@@ -2,12 +2,12 @@ import "./index.css";
 import App from "./App.jsx";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./Context/AuthProvider.jsx";
+import { GlobalProvider } from "./Context/GlobalProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <AuthProvider>
+    <GlobalProvider>
       <App />
-    </AuthProvider>
+    </GlobalProvider>
   </BrowserRouter>
 );
