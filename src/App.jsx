@@ -1,3 +1,4 @@
+import "react-toastify/dist/ReactToastify.css";
 import AdminPanel from "./components/AdminPanel";
 import ChallengeDetail from "./pages/ChallengeDetail";
 import ChallengeProgress from "./pages/ChallengeProgress";
@@ -9,7 +10,7 @@ import MainLayout from "./Layout/MainLayout";
 import NotFound from "./pages/NotFound";
 import Onboarding from "./pages/Onboarding";
 import ProtectedRoute from "./components/ProtectedRoute";
-import WelcomeUser from "./components/WelcomeUser";
+import Welcome from "./components/Welcome";
 import { Route } from "react-router-dom";
 import { Routes } from "react-router-dom";
 
@@ -19,10 +20,6 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="logout" element={<Logout />} />
-          <Route path="onboarding" element={<Onboarding />} />
-          <Route path="welcomeuser" element={<WelcomeUser />} />
           <Route path="challengedetail" element={<ChallengeDetail />} />
           <Route path="challengeprogress" element={<ChallengeProgress />} />
           <Route path="createchallenge" element={<CreateChallenge />} />
@@ -36,6 +33,10 @@ function App() {
             }
           />
         </Route>
+        <Route path="login" element={<Login />} />
+        <Route path="logout" element={<Logout />} />
+        <Route path="onboarding" element={<Onboarding />} />
+        <Route path="welcome" element={<Welcome />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
