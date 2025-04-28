@@ -8,30 +8,47 @@ function Welcome() {
   const [email, setEmail] = useState("");
   const [emailExist, setEmailExist] = useState(null);
   const [password, setPassword] = useState("");
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   const handleNext = async () => {
     const emailRegex =
       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+
     if (email.trim() === "") {
       toast.warning("The email field is empty !");
+      return;
     } else if (!emailRegex.test(email)) {
       toast.error("Please enter a valid email !");
+      return;
     }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("No token found. Please log in or sign up.");
+      return;
+    }
+
     try {
-      const res = await axios.get("http://localhost:8000/api/v1/users");
-      if (res.data.exist) {
-        toast.info("Email exist. Please enter your password.");
-        setEmailExist(true);
-      } else {
-        toast.info("Email not found. Please sign up");
-        setEmailExist(false);
-      }
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/users/me",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Добавляем токен в заголовок
+          },
+          withCredentials: true,
+        }
+      );
+
+      console.log("User data:", response.data);
+      toast.info("Email exist. Please enter your password.");
+      setEmailExist(true);
     } catch (error) {
-      console.log("Error cheching email", error);
+      console.error("Error by checking email", error);
       toast.error("Server error. Please try again later");
+      setEmailExist(false);
     }
   };
+
   const handleLoginOrSignup = async () => {
     if (password.trim() === "") {
       toast.warning("Password field is empty");
@@ -39,19 +56,27 @@ function Welcome() {
     }
     try {
       if (emailExist) {
-        await axios.post("http://localhost:8000/api/v1/users/auth/login", {
-          email,
-          password,
-        });
+        const res = await axios.post(
+          "http://localhost:8000/api/v1/users/auth/login",
+          {
+            email,
+            password,
+          }
+        );
+        localStorage.setItem("token", res.data.token); // Сохраняем токен
         toast.success("Logged in successfully!");
         setTimeout(() => {
           navigate("/home");
         }, 1500);
       } else {
-        await axios.post("http://localhost:8000/api/v1/users/auth/signup", {
-          email,
-          password,
-        });
+        const res = await axios.post(
+          "http://localhost:8000/api/v1/users/auth/signup",
+          {
+            email,
+            password,
+          }
+        );
+        localStorage.setItem("token", res.data.token); // Сохраняем токен
         toast.success("Account created successfully!");
         setTimeout(() => {
           navigate("/home");
