@@ -3,6 +3,7 @@ import logo from "../assets/logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
+import { BounceLoader } from "react-spinners";
 
 function Welcome() {
   const [email, setEmail] = useState("");
@@ -51,8 +52,8 @@ function Welcome() {
     if (password.trim() === "") {
       toast.warning("Password field is empty");
       return;
-      setLoading(true);
     }
+    setLoading(true);
     try {
       if (emailExist) {
         const res = await axios.post(
@@ -119,19 +120,16 @@ function Welcome() {
             />
           </span>
         )}
-        <button
+        {loading ? (<BounceLoader color="green" />) : (<><button
           className="bg-green-700 px-4 py-2 rounded-md cursor-pointer"
           onClick={emailExist === null ? handleNext : handleLoginOrSignup}
-          disabled={loading}
         >
-          {loading
-            ? "Loading..."
-            : emailExist === null
+          {emailExist === null
             ? "Next"
             : emailExist
             ? "Login"
             : "Signup"}
-        </button>
+        </button></>) }
         <ToastContainer position="top-center" />
       </div>
     </>
