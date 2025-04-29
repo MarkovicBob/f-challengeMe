@@ -22,26 +22,19 @@ function Welcome() {
       return;
     }
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("No token found. Please log in or sign up.");
-      return;
-    }
-
     try {
-      const response = await axios.get(
-        "http://localhost:8000/api/v1/users/me",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Добавляем токен в заголовок
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get("http://localhost:8000/api/v1/users");
 
-      console.log("User data:", response.data);
-      toast.info("Email exist. Please enter your password.");
-      setEmailExist(true);
+      const users = response.data.data;
+      const emails = users.map((element) => {
+        return element.email;
+      });
+      if (emails.includes(email)) {
+        toast.info("Email exist. Please enter your password.");
+        setEmailExist(true);
+      } else {
+        setEmailExist(false);
+      }
     } catch (error) {
       console.error("Error by checking email", error);
       toast.error("Server error. Please try again later");
@@ -63,7 +56,7 @@ function Welcome() {
             password,
           }
         );
-        localStorage.setItem("token", res.data.token); // Сохраняем токен
+        localStorage.setItem("token", res.data.token);
         toast.success("Logged in successfully!");
         setTimeout(() => {
           navigate("/home");
@@ -76,7 +69,8 @@ function Welcome() {
             password,
           }
         );
-        localStorage.setItem("token", res.data.token); // Сохраняем токен
+        localStorage.setItem("token", res.data.token);
+
         toast.success("Account created successfully!");
         setTimeout(() => {
           navigate("/home");
@@ -108,7 +102,9 @@ function Welcome() {
           <span className="bg-white rounded-md">
             <input
               type="password"
-              placeholder="Your Password"
+              placeholder={`${
+                emailExist ? "Enter your password" : "Create new password"
+              }`}
               className="placeholder-gray-500 p-2 text-black"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
