@@ -92,7 +92,7 @@ function Welcome() {
         <img src={logo} alt="logo" className="w-50" />
         <h1>Welcome to Challenge ME</h1>
 
-        {!emailExist && email ? (
+        {emailExist === null || emailExist === false ? (
           <span className="bg-white rounded-md">
             <input
               type="email"
