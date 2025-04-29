@@ -1,13 +1,11 @@
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import Welcome from "../components/Welcome";
 import { Outlet } from "react-router-dom";
 
 function MainLayout() {
   return (
     <>
-      <Navbar />
+      <Welcome />
       <Outlet />
-      <Footer />
     </>
   );
 }
