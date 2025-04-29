@@ -23,7 +23,9 @@ function Welcome() {
     }
 
     try {
-      const response = await axios.get("http://localhost:8000/api/v1/users");
+      const response = await axios.get(
+        "https://challengeme-server-ra24.onrender.com/api/v1/users"
+      );
 
       const users = response.data.data;
       const emails = users.map((element) => {
@@ -50,7 +52,7 @@ function Welcome() {
     try {
       if (emailExist) {
         const res = await axios.post(
-          "http://localhost:8000/api/v1/users/auth/login",
+          "https://challengeme-server-ra24.onrender.com/api/v1/users/auth/login",
           {
             email,
             password,
@@ -63,7 +65,7 @@ function Welcome() {
         }, 1500);
       } else {
         const res = await axios.post(
-          "http://localhost:8000/api/v1/users/auth/signup",
+          "https://challengeme-server-ra24.onrender.com/api/v1/users/auth/signup",
           {
             email,
             password,
