@@ -92,17 +92,15 @@ function Welcome() {
         <img src={logo} alt="logo" className="w-50" />
         <h1>Welcome to Challenge ME</h1>
 
-        {emailExist === null || emailExist === false ? (
-          <span className="bg-white rounded-md">
-            <input
-              type="email"
-              placeholder="Your E-mail"
-              className="placeholder-gray-500 p-2 text-black"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </span>
-        ) : null}
+        <span className="bg-white rounded-md">
+          <input
+            type="email"
+            placeholder="Your E-mail"
+            className="placeholder-gray-500 p-2 text-black"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </span>
 
         {emailExist !== null && (
           <span className="bg-white rounded-md">
