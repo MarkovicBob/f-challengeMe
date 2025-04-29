@@ -91,16 +91,17 @@ function Welcome() {
       <div className="flex flex-col min-h-screen items-center-safe justify-center-safe gap-5 m-auto">
         <img src={logo} alt="logo" className="w-50" />
         <h1>Welcome to Challenge ME</h1>
-
-        <span className="bg-white rounded-md">
-          <input
-            type="email"
-            placeholder="Your E-mail"
-            className="placeholder-gray-500 p-2 text-black"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </span>
+        {emailExist === null || emailExist === false ? (
+          <span className="bg-white rounded-md">
+            <input
+              type="email"
+              placeholder="Your E-mail"
+              className="placeholder-gray-500 p-2 text-black"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </span>
+        ) : null}
 
         {emailExist !== null && (
           <span className="bg-white rounded-md">
