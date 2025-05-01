@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 function CreateChallenge() {
+
   const [formData, setFormData] = useState({
     challengeTitle: "",
     challengeDescription: "",
@@ -236,6 +237,9 @@ function CreateChallenge() {
       </form>
     </div>
   );
+=======
+  return <div className="mt-15">CreateChallenge</div>;
+
 }
 
 export default CreateChallenge;
