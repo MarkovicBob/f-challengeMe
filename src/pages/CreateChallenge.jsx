@@ -1,5 +1,5 @@
 function CreateChallenge() {
-  return <div>CreateChallenge</div>;
+  return <div className="mt-15">CreateChallenge</div>;
 }
 
 export default CreateChallenge;
