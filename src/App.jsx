@@ -21,7 +21,7 @@ function App() {
       <Routes>
         <Route path="/start" element={<MainLayout />}>
           <Route path="home" element={<Home />} />
-          <Route path="challengedetail" element={<ChallengeDetail />} />
+          <Route path="home/:id" element={<ChallengeDetail />} />
           <Route path="challengeprogress" element={<ChallengeProgress />} />
           <Route path="createchallenge" element={<CreateChallenge />} />
           <Route path="map" element={<Map />} />

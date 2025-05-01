@@ -2,8 +2,8 @@ import axios from "axios";
 import logo from "../assets/logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { ToastContainer, toast } from "react-toastify";
 import { BounceLoader } from "react-spinners";
+import { ToastContainer, toast } from "react-toastify";
 
 function Welcome() {
   const [email, setEmail] = useState("");
@@ -66,7 +66,7 @@ function Welcome() {
         localStorage.setItem("token", res.data.token);
         toast.success("Logged in successfully!");
         setTimeout(() => {
-          navigate("/home");
+          navigate("/start/home");
         }, 1500);
       } else {
         const res = await axios.post(
@@ -80,7 +80,7 @@ function Welcome() {
 
         toast.success("Account created successfully!");
         setTimeout(() => {
-          navigate("/home");
+          navigate("/start/home");
         }, 1500);
       }
     } catch (error) {
@@ -120,16 +120,18 @@ function Welcome() {
             />
           </span>
         )}
-        {loading ? (<BounceLoader color="green" />) : (<><button
-          className="bg-green-700 px-4 py-2 rounded-md cursor-pointer"
-          onClick={emailExist === null ? handleNext : handleLoginOrSignup}
-        >
-          {emailExist === null
-            ? "Next"
-            : emailExist
-            ? "Login"
-            : "Signup"}
-        </button></>) }
+        {loading ? (
+          <BounceLoader color="green" />
+        ) : (
+          <>
+            <button
+              className="bg-green-700 px-4 py-2 rounded-md cursor-pointer"
+              onClick={emailExist === null ? handleNext : handleLoginOrSignup}
+            >
+              {emailExist === null ? "Next" : emailExist ? "Login" : "Signup"}
+            </button>
+          </>
+        )}
         <ToastContainer position="top-center" />
       </div>
     </>
