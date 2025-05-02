@@ -2,6 +2,7 @@ import axios from "axios";
 import logo from "../assets/logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { BounceLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 
 function Welcome() {
@@ -9,6 +10,7 @@ function Welcome() {
   const [emailExist, setEmailExist] = useState(null);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleNext = async () => {
     const emailRegex =
@@ -21,7 +23,7 @@ function Welcome() {
       toast.error("Please enter a valid email !");
       return;
     }
-
+    setLoading(true);
     try {
       const response = await axios.get(
         "https://challengeme-server-ra24.onrender.com/api/v1/users"
@@ -41,6 +43,8 @@ function Welcome() {
       console.error("Error by checking email", error);
       toast.error("Server error. Please try again later");
       setEmailExist(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,6 +53,7 @@ function Welcome() {
       toast.warning("Password field is empty");
       return;
     }
+    setLoading(true);
     try {
       if (emailExist) {
         const res = await axios.post(
@@ -61,7 +66,7 @@ function Welcome() {
         localStorage.setItem("token", res.data.token);
         toast.success("Logged in successfully!");
         setTimeout(() => {
-          navigate("/home");
+          navigate("/start/home");
         }, 1500);
       } else {
         const res = await axios.post(
@@ -75,7 +80,7 @@ function Welcome() {
 
         toast.success("Account created successfully!");
         setTimeout(() => {
-          navigate("/home");
+          navigate("/start/home");
         }, 1500);
       }
     } catch (error) {
@@ -83,6 +88,8 @@ function Welcome() {
       toast.error(
         error.response?.data?.message || "Error during authentication."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -113,12 +120,18 @@ function Welcome() {
             />
           </span>
         )}
-        <button
-          className="bg-green-700 px-4 py-2 rounded-md cursor-pointer"
-          onClick={emailExist === null ? handleNext : handleLoginOrSignup}
-        >
-          {emailExist === null ? "Next" : emailExist ? "Login" : "Signup"}
-        </button>
+        {loading ? (
+          <BounceLoader color="green" />
+        ) : (
+          <>
+            <button
+              className="bg-green-700 px-4 py-2 rounded-md cursor-pointer"
+              onClick={emailExist === null ? handleNext : handleLoginOrSignup}
+            >
+              {emailExist === null ? "Next" : emailExist ? "Login" : "Signup"}
+            </button>
+          </>
+        )}
         <ToastContainer position="top-center" />
       </div>
     </>
