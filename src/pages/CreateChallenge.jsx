@@ -195,9 +195,9 @@ function CreateChallenge() {
 
   const handleSubmit = async (e) => {
     setFormData({
-      challengeTitle: challengeTitle,
-      challengeDescription: challengeDescription,
-      shortDescription: "",
+      challengeTitle: "Title from AI",
+      challengeDescription: "Description from AI",
+      shortDescription: "Description from AI",
       challengeCategory: category,
       challengeSubCategory: subCategory,
       standardLevel: standardLevel,
