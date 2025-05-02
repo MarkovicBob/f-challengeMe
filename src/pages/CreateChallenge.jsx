@@ -1,7 +1,26 @@
+import { useState, useEffect, useRef } from "react";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import axios from "axios";
-import { useState, useEffect } from "react";
 
 function CreateChallenge() {
+  const challengeDetailBaseObject = {
+    challengeTitle: "Create Art from Nature",
+    challengeDescription: "Use natural materials to create a piece of art.",
+    shortDescription: "Art from nature",
+    challengeCategory: "Photography, Creativity, Art",
+    challengeSubCategory: "Finding/creating art in nature",
+    fitnessLevel: "Beginner",
+    frequence: "Once",
+    location: {
+      type: "Point",
+      coordinates: [[41.8781, -87.6298]],
+    },
+    challengeReward: 60,
+    createdBy: "644b1e9f5f1b2c001c8e4d59",
+    duration: 1,
+  };
+
   const [formData, setFormData] = useState({
     challengeTitle: "",
     challengeDescription: "",
@@ -22,50 +41,48 @@ function CreateChallenge() {
   const [subCategoryOptions, setSubCategoryOptions] = useState([]);
   const [challengeTitle, setChallengeTitle] = useState("");
   const [challengeDescription, setChallengeDescription] = useState("");
-  const [standardLevel, setstandardLevel] = useState("beginner");
+  const [standardLevel, setStandardLevel] = useState("beginner");
   const [locationType, setLocationType] = useState("Point");
-  const [coordinates, setCoordinates] = useState([""]);
-  const [address, setAddress] = useState("");
+  const [coordinates, setCoordinates] = useState([
+    [0, 0],
+    [0, 0],
+  ]);
+  const [addresses, setAddresses] = useState(["", ""]);
+  const geocoderContainerA = useRef(null);
+  const geocoderContainerB = useRef(null);
 
-  const getCoordinates = async (address) => {
-    if (!address || address.trim() === "") {
-      throw new Error("Address is required to fetch coordinates.");
-    }
-
-    try {
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${address}`
-      );
-      const data = response.data;
-
-      if (data.length > 0) {
-        const { lat, lon } = data[0];
-        return { lat: parseFloat(lat), lng: parseFloat(lon) };
-      } else {
-        throw new Error("City not found");
-      }
-    } catch (error) {
-      console.error("Error fetching coordinates:", error.message);
-      throw new Error("Failed to fetch coordinates. Please try again.");
-    }
+  const handleGeocoderResult = (index, result) => {
+    const updatedCoordinates = [...coordinates];
+    updatedCoordinates[index] = [
+      result.result.center[1], // lat
+      result.result.center[0], // lng
+    ];
+    setCoordinates(updatedCoordinates);
   };
 
-  const challengeDetailBaseObject = {
-    challengeTitle: "Create Art from Nature",
-    challengeDescription: "Use natural materials to create a piece of art.",
-    shortDescription: "Art from nature",
-    challengeCategory: "Photography, Creativity, Art",
-    challengeSubCategory: "Finding/creating art in nature",
-    fitnessLevel: "Beginner",
-    frequence: "Once",
-    location: {
-      type: "Point",
-      coordinates: [[41.8781, -87.6298]],
-    },
-    challengeReward: 60,
-    createdBy: "644b1e9f5f1b2c001c8e4d59",
-    duration: 1,
-  };
+  useEffect(() => {
+    const geocoderA = new MapboxGeocoder({
+      accessToken: import.meta.env.VITE_MAPBOX_TOKEN,
+      placeholder: "Enter address for Point A",
+    });
+
+    geocoderA.on("result", (e) => handleGeocoderResult(0, e));
+
+    if (geocoderContainerA.current) {
+      geocoderContainerA.current.appendChild(geocoderA.onAdd());
+    }
+
+    const geocoderB = new MapboxGeocoder({
+      accessToken: import.meta.env.VITE_MAPBOX_TOKEN,
+      placeholder: "Enter address for Point B",
+    });
+
+    geocoderB.on("result", (e) => handleGeocoderResult(1, e));
+
+    if (geocoderContainerB.current) {
+      geocoderContainerB.current.appendChild(geocoderB.onAdd());
+    }
+  }, []);
 
   const handleCategory = (e) => {
     const selectedCategory = e.target.value;
@@ -103,55 +120,129 @@ function CreateChallenge() {
     setLocationType(selectedType);
 
     if (selectedType === "Point") {
-      setCoordinates([""]);
+      setCoordinates([[0, 0]]);
     } else if (selectedType === "Route") {
-      setCoordinates(["", ""]);
+      setCoordinates([
+        [0, 0],
+        [0, 0],
+      ]);
     }
   };
 
-  const handleCoordinateChange = async (index, value) => {
+  const handleCoordinateChange = (index, value) => {
     const updatedCoordinates = [...coordinates];
-    updatedCoordinates[index] = value;
+    updatedCoordinates[index] = value.split(",").map((v) => {
+      const num = parseFloat(v.trim());
+      return isNaN(num) ? 0 : num;
+    });
     setCoordinates(updatedCoordinates);
+  };
+
+  const handleAddressChange = (index, value) => {
+    const updatedAddresses = [...addresses];
+    updatedAddresses[index] = value;
+    setAddresses(updatedAddresses);
+  };
+
+  const handleGetCoordinates = async () => {
+    const updatedCoordinates = [];
+    for (const address of addresses) {
+      if (!address.trim()) {
+        updatedCoordinates.push(null);
+        continue;
+      }
+
+      const coords = await getCoordinates(address);
+      if (coords) {
+        updatedCoordinates.push([coords.lat, coords.lng]);
+      } else {
+        updatedCoordinates.push(null);
+      }
+    }
+    setCoordinates(updatedCoordinates);
+    console.log("Coordinates:", updatedCoordinates);
+  };
+
+  const getCoordinates = async (address) => {
+    if (!address.trim()) {
+      console.error("Address is empty");
+      return null;
+    }
 
     try {
-      const coords = await getCoordinates(value);
-      // console.log(`Coordinates for ${value}:`, coords);
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+          address
+        )}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.features && data.features.length > 0) {
+        const [lng, lat] = data.features[0].center; // [lng, lat]
+        return { lat, lng };
+      } else {
+        throw new Error("No features found for the given address");
+      }
     } catch (error) {
-      // console.error(`Failed to fetch coordinates for ${value}:`, error.message);
+      console.error("Error fetching coordinates:", error.message);
+      return null;
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Category:", category);
-    console.log("Subcategory:", subCategory);
+  const handleSubmit = async (e) => {
     setFormData({
-      challengeTitle: challengeTitle,
-      challengeDescription: challengeDescription,
-      shortDescription: "",
+      challengeTitle: "Title from AI",
+      challengeDescription: "Description from AI",
+      shortDescription: "Description from AI",
       challengeCategory: category,
       challengeSubCategory: subCategory,
-      fitnessLevel: fitnessLevel,
+      standardLevel: standardLevel,
       frequence: "",
       location: {
         type: "Point",
-        coordinates: [[41.8781, -87.6298]],
+        coordinates: [coordinates],
       },
       challengeReward: 60,
       duration: 1,
     });
-    setCategory("");
-    setsubCategory("");
-    setSubCategoryOptions([]);
-    setChallengeTitle("");
-    e.target.reset();
+    try {
+      console.log("Form data:", formData);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "https://challengeme-server-ra24.onrender.com/api/v1/challenges",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Получаем ID созданного испытания
+      const challengeId = response.data.data._id;
+
+      // Перенаправляем пользователя на страницу описания испытания
+      navigate(`/home/${challengeId}`);
+
+      setCategory("");
+      setsubCategory("");
+      setSubCategoryOptions([]);
+      setChallengeTitle("");
+      setAddresses(["", ""]);
+      e.target.reset();
+      navigate(`/home/${challengeId}`);
+    } catch (error) {
+      console.error("Error submitting form:", error.message);
+    }
   };
 
   useEffect(() => {
     console.log(formData);
-
-    // Post Request with formData here
   }, [formData]);
 
   return (
@@ -159,7 +250,11 @@ function CreateChallenge() {
       <form
         action=""
         className="mt-20 mx-auto flex flex-col justify-center items-center"
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleGetCoordinates();
+          handleSubmit(e);
+        }}
       >
         <span className="">
           <select
@@ -197,35 +292,51 @@ function CreateChallenge() {
           defaultValue="Beginner"
           className="select placeholder-gray-500 p-2 text-black bg-white rounded-md mt-8 w-[212px]"
           onChange={(e) => {
-            setFitnessLevel(e.target.value);
+            setStandardLevel(e.target.value);
           }}
         >
-          <option disabled={true}>Pick a Fitness Level</option>
+          <option disabled={true}>Pick a Standard Level</option>
           <option>Easy</option>
           <option>Medium</option>
           <option>Difficult</option>
         </select>
 
-        <select
-          name="locationType"
-          value={locationType}
-          className="select placeholder-gray-500 p-2 text-black bg-white rounded-md mt-8 w-[212px]"
-          onChange={handleLocationTypeChange}
-        >
-          <option value="Point">Point</option>
-          <option value="Route">Route</option>
-        </select>
+        <fieldset className="border border-gray-300 rounded-md p-4 mt-8 w-[212px]">
+          <legend className="text-lg font-semibold text-white-700">
+            Location
+          </legend>
 
-        {coordinates.map((coordinate, index) => (
-          <input
-            key={index}
-            type="text"
-            placeholder={`Coordinate ${index + 1}`}
-            className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4"
-            value={coordinate}
-            onChange={(e) => handleCoordinateChange(index, e.target.value)}
-          />
-        ))}
+          <select
+            name="locationType"
+            value={locationType}
+            className="select placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
+            onChange={handleLocationTypeChange}
+          >
+            <option value="Point">Point</option>
+            <option value="Route">Route</option>
+          </select>
+
+          {locationType === "Point" ? (
+            <input
+              type="text"
+              placeholder="Address"
+              className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
+              value={addresses[0]}
+              onChange={(e) => handleAddressChange(0, e.target.value)}
+            />
+          ) : (
+            addresses.map((address, index) => (
+              <input
+                key={index}
+                type="text"
+                placeholder={`Address for Point ${index + 1}`}
+                className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
+                value={address}
+                onChange={(e) => handleAddressChange(index, e.target.value)}
+              />
+            ))
+          )}
+        </fieldset>
 
         <button
           type="submit"
