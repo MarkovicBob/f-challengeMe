@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import axios from "axios";
 
 function CreateChallenge() {
   const challengeDetailBaseObject = {
@@ -204,13 +205,29 @@ function CreateChallenge() {
       frequence: "",
       location: {
         type: "Point",
-        coordinates: [[41.8781, -87.6298]],
+        coordinates: [coordinates],
       },
       challengeReward: 60,
       duration: 1,
     });
     try {
       console.log("Form data:", formData);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "https://challengeme-server-ra24.onrender.com/api/v1/challenges",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Получаем ID созданного испытания
+      const challengeId = response.data.data._id;
+
+      // Перенаправляем пользователя на страницу описания испытания
+      navigate(`/home/${challengeId}`);
 
       setCategory("");
       setsubCategory("");
@@ -218,7 +235,7 @@ function CreateChallenge() {
       setChallengeTitle("");
       setAddresses(["", ""]);
       e.target.reset();
-      // navigate to challenge
+      navigate(`/home/${challengeId}`);
     } catch (error) {
       console.error("Error submitting form:", error.message);
     }
