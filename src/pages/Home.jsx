@@ -1,10 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { GoStar, GoStarFill } from "react-icons/go";
 import { useNavigate } from "react-router";
 
 function Home() {
   const [loading, setLoading] = useState(true);
   const [challenges, setChallenges] = useState([]);
+  const [filled, setFilled] = useState(false);
+  const [filledStars, setFilledStars] = useState({});
   const navigate = useNavigate();
 
   const handleClick = (id) => {
@@ -17,7 +20,7 @@ function Home() {
         const res = await axios.get(
           `https://challengeme-server-ra24.onrender.com/api/v1/challenges`
         );
-        console.log("API Response:", res.data.data);
+        // console.log("API Response:", res.data.data);
         setChallenges(res.data.data);
       } catch (error) {
         console.error("Fetching error", error);
@@ -47,18 +50,34 @@ function Home() {
               alt="challenge/image"
               className="w-full h-48 object-cover rounded mb-3"
             />
+            <div className="flex flex-row gap-4">
+              <p className=" bg-green-600 basis-2/3 text-m flex items-center justify-center text-center rounded-sm">
+                {/* {getCategoryIcon(challenge.challengeCategory)} */}
+                {challenge.challengeCategory}
+              </p>
+              <p className="bg-yellow-600 basis-1/3 text-center rounded-sm gap-3">
+                {challenge.fitnessLevel}
+              </p>
+            </div>
             <div className="flex flex-row justify-between items-center">
               <h3 className="text-xl font-semibold mb-2">
                 {challenge.challengeTitle}
               </h3>
-              <p className="bg-yellow-300 w-6 h-6 rounded-full"></p>
+              <p
+                className="text-3xl"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFilledStars((prev) => ({
+                    ...prev,
+                    [challenge._id]: !prev[challenge._id],
+                  }));
+                  setFilled(!filled);
+                }}
+              >
+                {filledStars[challenge._id] ? <GoStarFill /> : <GoStar />}
+              </p>
             </div>
-            <p className="mb-2">
-              <strong>Short Description:</strong> {challenge.shortDescription}
-            </p>
-            <p className="mb-2">
-              <strong>Category:</strong> {challenge.challengeCategory}
-            </p>
+            <p className="mb-2">{challenge.shortDescription}</p>
             {/* <p>
               <strong>Full Description:</strong>{" "}
               {challenge.challengeDescription}

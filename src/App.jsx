@@ -5,7 +5,7 @@ import ChallengeProgress from "./pages/ChallengeProgress";
 import CreateChallenge from "./pages/CreateChallenge";
 import Home from "./pages/Home";
 import MainLayout from "./Layout/MainLayout";
-import Map from "./pages/Map";
+import MapComponent from "./pages/MapComponent";
 import NotFound from "./pages/NotFound";
 import Onboarding from "./pages/Onboarding";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -24,7 +24,7 @@ function App() {
           <Route path="home/:id" element={<ChallengeDetail />} />
           <Route path="challengeprogress" element={<ChallengeProgress />} />
           <Route path="createchallenge" element={<CreateChallenge />} />
-          <Route path="map" element={<Map />} />
+          <Route path="map" element={<MapComponent />} />
           <Route path="takeaphoto" element={<TakeAPhoto />} />
           <Route
             path="dashboard"

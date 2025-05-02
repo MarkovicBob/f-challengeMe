@@ -10,9 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-geocoder": "^5.0.3",
+    "@mapbox/search-js-react": "^1.0.0",
     "@tailwindcss/vite": "^4.1.4",
+    "@turf/turf": "^7.2.0",
+    "@types/maplibre-gl": "^1.13.2",
     "axios": "^1.9.0",
     "daisyui": "^5.0.28",
+    "maplibre-gl": "^5.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
