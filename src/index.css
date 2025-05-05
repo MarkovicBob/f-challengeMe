@@ -4,3 +4,75 @@
 .active svg {
   fill: orange;
 }
+.map-container {
+  margin: 0 auto;
+  margin-top: 60px;
+  width: 90%;
+  height: 80vh;
+}
+
+.interactive-marker {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.marker-core {
+  width: 20px;
+  height: 20px;
+  background: #e11d48;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px rgba(225, 29, 72, 0.4);
+}
+
+.pulse-effect {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #e11d48;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.style-controls {
+  color: #007bff;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.style-button {
+  display: block;
+  margin: 5px 0;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  background: darkgray;
+  transition: all 0.2s;
+}
+
+.style-button.active {
+  background: #007bff;
+  color: white;
+}
+
+.style-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
