@@ -203,7 +203,7 @@ function CreateChallenge() {
       const token = localStorage.getItem("token");
       console.log("Form data:", formData, "token:", token);
       const response = await axios.post(
-        "http://localhost:8000/api/v1/challenges",
+        "https://challengeme-server-ra24.onrender.com/api/v1/challenges",
         formData,
         {
           headers: {
