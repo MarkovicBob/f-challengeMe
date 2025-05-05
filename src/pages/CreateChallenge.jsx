@@ -2,25 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function CreateChallenge() {
-  const challengeDetailBaseObject = {
-    challengeTitle: "Create Art from Nature",
-    challengeDescription: "Use natural materials to create a piece of art.",
-    shortDescription: "Art from nature",
-    challengeCategory: "Photography, Creativity, Art",
-    challengeSubCategory: "Finding/creating art in nature",
-    fitnessLevel: "Beginner",
-    frequence: "Once",
-    location: {
-      type: "Point",
-      coordinates: [[41.8781, -87.6298]],
-    },
-    challengeReward: 60,
-    createdBy: "644b1e9f5f1b2c001c8e4d59",
-    duration: 1,
-  };
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     challengeTitle: "",
     challengeDescription: "",
@@ -129,15 +114,6 @@ function CreateChallenge() {
     }
   };
 
-  const handleCoordinateChange = (index, value) => {
-    const updatedCoordinates = [...coordinates];
-    updatedCoordinates[index] = value.split(",").map((v) => {
-      const num = parseFloat(v.trim());
-      return isNaN(num) ? 0 : num;
-    });
-    setCoordinates(updatedCoordinates);
-  };
-
   const handleAddressChange = (index, value) => {
     const updatedAddresses = [...addresses];
     updatedAddresses[index] = value;
@@ -195,38 +171,37 @@ function CreateChallenge() {
   };
 
   const handleSubmit = async (e) => {
-    setFormData({
-      challengeTitle: "Title from AI",
-      challengeDescription: "Description from AI",
+    const formData = {
+      challengeTitle: challengeTitle || "Default Title",
+      challengeDescription: challengeDescription || "Default Description",
       shortDescription: "Description from AI",
-      challengeCategory: category,
-      challengeSubCategory: subCategory,
-      standardLevel: standardLevel,
-      frequence: "",
+      challengeCategory: category || "Default Category",
+      challengeSubCategory: subCategory || "Default Subcategory",
+      standardLevel: standardLevel || "Beginner",
+      frequence: "Once",
       location: {
-        type: "Point",
-        coordinates: [coordinates],
+        type: locationType || "Point", // Убедитесь, что type передаётся
+        coordinates: coordinates || [41.8781, -87.6298], // Убедитесь, что coordinates передаётся
       },
       challengeReward: 60,
       duration: 1,
-    });
+    };
+    setFormData(formData);
     try {
-      console.log("Form data:", formData);
       const token = localStorage.getItem("token");
+      console.log("Form data:", formData, "token:", token, coordinates);
       const response = await axios.post(
-        "https://challengeme-server-ra24.onrender.com/api/v1/challenges",
+        "http://localhost:8000/api/v1/challenges",
         formData,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            authorization: `Bearer ${token}`,
           },
         }
       );
 
-      // Получаем ID созданного испытания
       const challengeId = response.data.data._id;
 
-      // Перенаправляем пользователя на страницу описания испытания
       navigate(`/home/${challengeId}`);
 
       setCategory("");
@@ -237,7 +212,10 @@ function CreateChallenge() {
       e.target.reset();
       navigate(`/home/${challengeId}`);
     } catch (error) {
-      console.error("Error submitting form:", error.message);
+      console.error(
+        "Error submitting form:",
+        error.response?.data || error.message
+      );
     }
   };
 
