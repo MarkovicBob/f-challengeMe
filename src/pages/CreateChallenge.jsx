@@ -238,28 +238,9 @@ function CreateChallenge() {
   return (
     <div className="mt-15">
       <form
-        className="mt-20 mx-auto flex flex-col justify-center items-center max-w-md"
+        className="mt-20 mx-auto flex flex-col justify-center items-center max-w-md w-[212px]"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-xl font-bold mb-4">Create New Challenge</h2>
-
-        {/* Challenge Title */}
-        <input
-          type="text"
-          placeholder="Challenge Title"
-          className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
-          value={challengeTitle}
-          onChange={(e) => setChallengeTitle(e.target.value)}
-        />
-
-        {/* Challenge Description */}
-        <textarea
-          placeholder="Challenge Description"
-          className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full h-24"
-          value={challengeDescription}
-          onChange={(e) => setChallengeDescription(e.target.value)}
-        />
-
         {/* Category */}
         <select
           name="category"
@@ -338,7 +319,7 @@ function CreateChallenge() {
                 placeholder={`Address for ${
                   locationType === "Point" ? "Location" : `Point ${index + 1}`
                 }`}
-                className="placeholder-gray-500 p-2 text-black bg-white rounded-md w-full"
+                className="placeholder-gray-500 p-2 text-black bg-white rounded-md w-[212px]"
                 value={address}
                 onChange={(e) => handleAddressChange(index, e.target.value)}
               />
