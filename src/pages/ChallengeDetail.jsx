@@ -1,5 +1,6 @@
 import StarButton from "../components/StarButton";
 import axios from "axios";
+import mapa from "../assets/mapa.jpg";
 import { useEffect, useState } from "react";
 import { FaRepeat } from "react-icons/fa6";
 import { GiDuration, GiMeditation, GiPaintBrush } from "react-icons/gi";
@@ -71,63 +72,60 @@ function ChallengeDetail() {
   if (!challenge) return <p className="mt-15">Challenge not found</p>;
 
   return (
-    <div className="mt-20 p-2 max-h-screen ">
+    <div className="mt-20 p-2 h-[100vh] flex flex-col ">
       <img
-        src="https://www.bergsteigerschule-watzmann.de/cdn/uploads/bergwandern-lernen-in-berchtesgaden.jpg"
+        src={mapa}
         alt="challenge/image"
         className="w-full h-48 object-cover rounded mb-3"
       />
-      <div className="flex flex-row gap-4">
+      <div className="flex flex-col gap-1">
         <p
-          className={`basis-2/3 text-m flex items-center justify-center text-center rounded-sm ${getCategoryColor(
+          className={`w-[70px] text-m text-center rounded-sm ${getLevelColor(
+            challenge.standardLevel
+          )}`}
+        >
+          {challenge.standardLevel}
+        </p>
+        <div className="flex flex-row items-center justify-between pb-2">
+          <h3 className="text-2xl font-extrabold mb-2 pt-4">
+            {challenge.challengeTitle}
+          </h3>
+          <div className="favorite-container">
+            <StarButton challengeId={challenge._id} />
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-row gap-2">
+        <p
+          className={`flex basis-2/3 pl-1.5 text-m text-center rounded-sm ${getCategoryColor(
             challenge.challengeCategory
           )}`}
         >
           {challenge.challengeCategory}
         </p>
         <p
-          className={`basis-1/3 text-m flex items-center justify-center text-center rounded-sm ${getLevelColor(
-            challenge.standardLevel
+          className={`flex basis-1/3 text-m justify-start pl-1.5 rounded-sm ${getSubCategoryColor(
+            challenge.challengeSubCategory
           )}`}
         >
-          {challenge.standardLevel}
+          {challenge.challengeSubCategory}
         </p>
       </div>
-      <p
-        className={`text-m text-center rounded-sm ${getSubCategoryColor(
-          challenge.challengeSubCategory
-        )}`}
-      >
-        {challenge.challengeSubCategory}
-      </p>
-      <div className="flex flex-row items-center justify-between">
-        <h3 className="text-2xl font-extrabold mb-2 pt-4">
-          {challenge.challengeTitle}
-        </h3>
-        <div className="favorite-container">
-          <StarButton challengeId={challenge._id} />
-        </div>
-      </div>
 
-      <p className="mb-2">{challenge.shortDescription}</p>
-      {/* <p>
-        <strong>Full Description:</strong> {challenge.challengeDescription}
-      </p> */}
+      <p className="pt-3 pb-5">{challenge.shortDescription}</p>
+
       <div className="flex flex-row items-center justify-evenly pt-4">
-        <img className="w-35 rounded-3xl" src="/src/assets/map.jpg" alt="map" />
-        <div>
-          <p className="flex flex-row items-center gap-2">
-            <FaRepeat /> {challenge.frequence}
-          </p>
-          <p className="flex flex-row items-center gap-2">
-            <GiDuration /> {challenge.duration} days
-          </p>
-          <p className="flex flex-row items-center gap-2">
-            <LuCoins /> {challenge.challengeReward} Points
-          </p>
-        </div>
+        <p className="flex flex-row items-center gap-2">
+          <FaRepeat /> {challenge.frequence}
+        </p>
+        <p className="flex flex-row items-center gap-2">
+          <GiDuration /> {challenge.duration} days
+        </p>
+        <p className="flex flex-row items-center gap-2">
+          <LuCoins /> {challenge.challengeReward} Points
+        </p>
       </div>
-      <div className="flex flex-col justify-around text-center p-4 gap-3">
+      <div className="flex flex-col justify-around text-center p-4 gap-4 mt-5">
         <button
           onClick={handleStartChallenge}
           className={

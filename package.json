@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mapbox/mapbox-gl-geocoder": "^5.0.3",
-    "@mapbox/search-js-react": "^1.0.0",
+    "@ionic/react": "^8.5.6",
+    "@ionic/react-router": "^8.5.6",
     "@mapbox/mapbox-gl-geocoder": "^5.0.3",
     "@mapbox/search-js-react": "^1.0.0",
     "@tailwindcss/vite": "^4.1.4",
@@ -19,7 +19,7 @@
     "@types/maplibre-gl": "^1.14.0",
     "axios": "^1.9.0",
     "daisyui": "^5.0.28",
-    "maplibre-gl": "^5.4.0",
+    "ionicons": "^8.0.6",
     "maplibre-gl": "^5.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
