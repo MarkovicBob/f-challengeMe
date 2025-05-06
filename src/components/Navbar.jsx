@@ -10,7 +10,7 @@ function Navbar() {
     "/start/challengeprogress": "Challenge Progress",
     "/start/map": "Map",
     "/start/takeaphoto": "Take a Photo",
-    "/start/dashboard": "Dashboard",
+    "/start/dashboard": "User Profile",
     "/onboarding": "Onboarding",
     "/": "Welcome",
   };
