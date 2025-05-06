@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { GoStar, GoStarFill } from "react-icons/go";
 import { useNavigate } from "react-router";
+import { getCategoryColor, getLevelColor } from "../utils/ColorChange";
 
 function Home() {
   const [loading, setLoading] = useState(true);
@@ -52,12 +53,19 @@ function Home() {
               className="w-full h-48 object-cover rounded mb-3"
             />
             <div className="flex flex-row gap-4">
-              <p className=" bg-green-600 basis-2/3 text-m flex items-center justify-center text-center rounded-sm">
-                {/* {getCategoryIcon(challenge.challengeCategory)} */}
+              <p
+                className={`basis-2/3 text-m flex items-center justify-center text-center rounded-sm ${getCategoryColor(
+                  challenge.challengeCategory
+                )}`}
+              >
                 {challenge.challengeCategory}
               </p>
-              <p className="bg-yellow-600 basis-1/3 text-center rounded-sm gap-3">
-                {challenge.fitnessLevel}
+              <p
+                className={`basis-1/3 text-m flex items-center justify-center text-center rounded-sm ${getLevelColor(
+                  challenge.standardLevel
+                )}`}
+              >
+                {challenge.standardLevel}
               </p>
             </div>
             <div className="flex flex-row justify-between items-center">
