@@ -332,7 +332,7 @@ function CreateChallenge() {
                 className="mb-2"
               />
 
-              {/* Manual address input */}
+              {/* Manual address input
               <input
                 type="text"
                 placeholder={`Address for ${
@@ -341,7 +341,7 @@ function CreateChallenge() {
                 className="placeholder-gray-500 p-2 text-black bg-white rounded-md w-full"
                 value={address}
                 onChange={(e) => handleAddressChange(index, e.target.value)}
-              />
+              /> */}
 
               {/* Show current coordinates */}
               {coordinates[index] && (
