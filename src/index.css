@@ -22,14 +22,14 @@
 
 .mapboxgl-ctrl-geocoder--input {
   padding: 0 !important;
-  height: 20px;
+  height: 20px !important;
   font-size: medium;
   padding-left: 2rem !important;
-  font-size: 0.875rem;
+  font-size: 0.875rem !important;
 }
 
 .mapboxgl-ctrl-geocoder--icon-search {
-  top: 10px;
+  top: 10px !important;
   left: 10px;
 }
 

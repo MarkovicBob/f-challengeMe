@@ -58,7 +58,6 @@ function CreateChallenge() {
     ];
     setCoordinates(updatedCoordinates);
 
-    // Update the address input field
     const updatedAddresses = [...addresses];
     updatedAddresses[index] = result.result.place_name;
     setAddresses(updatedAddresses);
