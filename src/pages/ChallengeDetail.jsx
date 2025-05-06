@@ -1,3 +1,4 @@
+import StarButton from "../components/StarButton";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaRepeat } from "react-icons/fa6";
@@ -8,12 +9,13 @@ import { MdCategory, MdOutlineSportsGymnastics } from "react-icons/md";
 import { PiStepsBold } from "react-icons/pi";
 import { TbGeometry } from "react-icons/tb";
 import { useParams } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
 
 function ChallengeDetail() {
   const { id } = useParams();
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [filled, setFilled] = useState(false);
+  // const [filled, setFilled] = useState(false);
 
   // const getCategoryIcon = (category) => {
   //   switch (category) {
@@ -44,6 +46,34 @@ function ChallengeDetail() {
     fetchChallenge();
   }, [id]);
 
+  const handleStartChallenge = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        `https://challengeme-server-ra24.onrender.com/api/v1/users/${userId}/activeList/${challenge._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Challenge started:", res.data);
+      if (
+        res.data.message === "Successfully added challenge to active challenges"
+      ) {
+        return toast.success("Challenge succsessfully started.");
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 409) {
+        return toast.error("Challenge already started.");
+      } else {
+        console.error("Error starting challenge", err);
+      }
+    }
+  };
+
   if (loading) return <p className="mt-15">Loading...</p>;
   if (!challenge) return <p className="mt-15">Challenge not found</p>;
 
@@ -71,9 +101,9 @@ function ChallengeDetail() {
         <h3 className="text-2xl font-extrabold mb-2 pt-4">
           {challenge.challengeTitle}
         </h3>
-        <p className="text-3xl" onClick={() => setFilled(!filled)}>
-          {filled ? <GoStarFill /> : <GoStar />}
-        </p>
+        <div className="favorite-container">
+          <StarButton challengeId={challenge._id} />
+        </div>
       </div>
 
       <p className="mb-2">{challenge.shortDescription}</p>
@@ -94,14 +124,20 @@ function ChallengeDetail() {
           </p>
         </div>
       </div>
-      <div className="flex flex-col justify-around text-center p-4">
-        <button className="bg-green-900 rounded-md p-2 mb-4">
+      <div className="flex flex-col justify-around text-center p-4 gap-3">
+        <button
+          onClick={handleStartChallenge}
+          className={
+            "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          }
+        >
           Start Challenge
         </button>
         <button className="bg-gray-500 rounded-md p-2 mb-10">
           View full Description
         </button>
       </div>
+      <ToastContainer position="top-center" />
     </div>
   );
 }

@@ -8,42 +8,47 @@ import MainLayout from "./Layout/MainLayout";
 import MapComponent from "./pages/MapComponent";
 import NotFound from "./pages/NotFound";
 import Onboarding from "./pages/Onboarding";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedLayout from "./Layout/ProtectedLayout";
+import PublicLayout from "./Layout/PublicLayout";
 import SimpleLayout from "./Layout/SimpleLayout";
 import TakeAPhoto from "./components/TakeAPhoto";
 import Welcome from "./components/Welcome";
-import { Route } from "react-router-dom";
-import { Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route path="/start" element={<MainLayout />}>
-          <Route path="home" element={<Home />} />
-          <Route path="home/:id" element={<ChallengeDetail />} />
-          <Route path="challengeprogress" element={<ChallengeProgress />} />
-          <Route path="createchallenge" element={<CreateChallenge />} />
-          <Route path="map" element={<MapComponent />} />
-          <Route path="takeaphoto" element={<TakeAPhoto />} />
-          <Route
-            path="dashboard"
-            element={
-              <ProtectedRoute>
-                <AdminPanel />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
+    <Routes>
+      <Route
+        path="/start"
+        element={
+          <ProtectedLayout>
+            <MainLayout />
+          </ProtectedLayout>
+        }
+      >
+        <Route path="home" element={<Home />} />
+        <Route path="home/:id" element={<ChallengeDetail />} />
+        <Route path="challengeprogress" element={<ChallengeProgress />} />
+        <Route path="createchallenge" element={<CreateChallenge />} />
+        <Route path="map" element={<MapComponent />} />
+        <Route path="takeaphoto" element={<TakeAPhoto />} />
+        <Route path="dashboard" element={<AdminPanel />} />
+      </Route>
 
-        <Route path="/" element={<SimpleLayout />}>
-          <Route path="/" element={<Welcome />} />
-          <Route path="onboarding" element={<Onboarding />} />
-        </Route>
+      <Route
+        path="/"
+        element={
+          <PublicLayout>
+            <SimpleLayout />
+          </PublicLayout>
+        }
+      >
+        <Route index element={<Welcome />} />
+        <Route path="onboarding" element={<Onboarding />} />
+      </Route>
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </div>
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 

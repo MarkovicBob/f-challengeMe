@@ -1,6 +1,6 @@
 function AdminPanel() {
   return (
-    <div>
+    <div className="mt-16">
       <h2>Welcome to your admin dashboard!</h2>
     </div>
   );
