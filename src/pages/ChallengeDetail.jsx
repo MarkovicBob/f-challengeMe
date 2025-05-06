@@ -10,25 +10,12 @@ import { PiStepsBold } from "react-icons/pi";
 import { TbGeometry } from "react-icons/tb";
 import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
+import { getCategoryColor, getLevelColor } from "../utils/ColorChange";
 
 function ChallengeDetail() {
   const { id } = useParams();
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const [filled, setFilled] = useState(false);
-
-  // const getCategoryIcon = (category) => {
-  //   switch (category) {
-  //     case "Movement, Hobby, Sports":
-  //       return <MdOutlineSportsGymnastics />;
-  //     case "Mindfulness, Focus, Meditation":
-  //       return <GiMeditation />;
-  //     case "Knowledge, Discovery, Geology":
-  //       return <TbGeometry />;
-  //     case "Photography, Creativity, Art":
-  //       return <GiPaintBrush />;
-  //   }
-  // };
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -85,12 +72,19 @@ function ChallengeDetail() {
         className="w-full h-48 object-cover rounded mb-3"
       />
       <div className="flex flex-row gap-4">
-        <p className=" bg-green-600 basis-2/3 text-m flex items-center justify-center text-center rounded-sm">
-          {/* {getCategoryIcon(challenge.challengeCategory)} */}
+        <p
+          className={`basis-2/3 text-m flex items-center justify-center text-center rounded-sm ${getCategoryColor(
+            challenge.challengeCategory
+          )}`}
+        >
           {challenge.challengeCategory}
         </p>
-        <p className="bg-yellow-600 basis-1/3 text-center rounded-sm gap-3">
-          {challenge.fitnessLevel}
+        <p
+          className={`basis-1/3 text-m flex items-center justify-center text-center rounded-sm ${getLevelColor(
+            challenge.standardLevel
+          )}`}
+        >
+          {challenge.standardLevel}
         </p>
       </div>
       <p>
