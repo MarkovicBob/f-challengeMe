@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GoStar, GoStarFill } from "react-icons/go";
+import { RiBookmark3Fill, RiBookmark3Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
 import { isFavorited, toggleFavorite } from "../api/favorite";
 
@@ -49,14 +49,14 @@ const StarButton = ({ challengeId }) => {
   if (loading)
     return (
       <span className="text-3xl">
-        <GoStar />
+        <RiBookmark3Line />
       </span>
     );
 
   return (
     <>
       <button onClick={handleClick} className="text-yellow-500 text-3xl">
-        {favorited ? <GoStarFill /> : <GoStar />}
+        {favorited ? <RiBookmark3Fill /> : <RiBookmark3Line />}
       </button>
       <ToastContainer position="top-center" />
     </>

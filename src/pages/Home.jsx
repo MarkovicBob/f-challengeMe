@@ -52,23 +52,23 @@ function Home() {
               alt="challenge/image"
               className="w-full h-48 object-cover rounded mb-3"
             />
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-row gap-2">
               <p
-                className={`basis-2/3 text-m flex items-center justify-center text-center rounded-sm ${getCategoryColor(
+                className={`basis-2/3 text-m flex items-center justify-start pl-1.5 rounded-sm ${getCategoryColor(
                   challenge.challengeCategory
                 )}`}
               >
                 {challenge.challengeCategory}
               </p>
               <p
-                className={`basis-1/3 text-m flex items-center justify-center text-center rounded-sm ${getLevelColor(
+                className={`basis-1/3 text-m flex items-center justify-start pl-1.5 rounded-sm ${getLevelColor(
                   challenge.standardLevel
                 )}`}
               >
                 {challenge.standardLevel}
               </p>
             </div>
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row justify-between items-center mt-3">
               <h3 className="text-xl font-semibold mb-2">
                 {challenge.challengeTitle}
               </h3>
