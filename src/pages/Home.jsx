@@ -1,3 +1,4 @@
+import StarButton from "../components/StarButton";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { GoStar, GoStarFill } from "react-icons/go";
@@ -6,8 +7,8 @@ import { useNavigate } from "react-router";
 function Home() {
   const [loading, setLoading] = useState(true);
   const [challenges, setChallenges] = useState([]);
-  const [filled, setFilled] = useState(false);
-  const [filledStars, setFilledStars] = useState({});
+  // const [filled, setFilled] = useState(false);
+  // const [filledStars, setFilledStars] = useState({});
   const navigate = useNavigate();
 
   const handleClick = (id) => {
@@ -63,19 +64,9 @@ function Home() {
               <h3 className="text-xl font-semibold mb-2">
                 {challenge.challengeTitle}
               </h3>
-              <p
-                className="text-3xl"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setFilledStars((prev) => ({
-                    ...prev,
-                    [challenge._id]: !prev[challenge._id],
-                  }));
-                  setFilled(!filled);
-                }}
-              >
-                {filledStars[challenge._id] ? <GoStarFill /> : <GoStar />}
-              </p>
+              <div onClick={(e) => e.stopPropagation()}>
+                <StarButton challengeId={challenge._id} />
+              </div>
             </div>
             <p className="mb-2">{challenge.shortDescription}</p>
             {/* <p>
