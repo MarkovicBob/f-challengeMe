@@ -1,5 +1,5 @@
-export const getCategoryColor = (CategoryColor) => {
-  switch (CategoryColor) {
+export const getCategoryColor = (Category) => {
+  switch (Category) {
     case "Movement, Hobby, Sports":
       return "bg-[#FFD700] text-black";
     case "Mindfulness, Focus, Meditation":
@@ -11,8 +11,8 @@ export const getCategoryColor = (CategoryColor) => {
   }
 };
 
-export const getLevelColor = (LevelColor) => {
-  switch (LevelColor) {
+export const getLevelColor = (Level) => {
+  switch (Level) {
     case "Easy":
       return "bg-[#F5F5F5] text-black";
     case "Medium":
