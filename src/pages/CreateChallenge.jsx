@@ -4,6 +4,12 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import {
+  getCategoryColor,
+  getSubCategoryColor,
+  getLevelColor,
+} from "../utils/ColorChange.js";
+import { useCategory } from "../hooks/useCategory.js";
 
 function CreateChallenge() {
   const navigate = useNavigate();
@@ -78,32 +84,7 @@ function CreateChallenge() {
   const handleCategory = (e) => {
     const selectedCategory = e.target.value;
     setCategory(selectedCategory);
-
-    switch (selectedCategory) {
-      case "Movement, Hobby, Sports":
-        setSubCategoryOptions([
-          "Hiking",
-          "Jogging",
-          "Cycling",
-          "Climbing",
-          "Kayaking",
-          "Gymnastics",
-          "Fitness",
-          "Fishing",
-        ]);
-        break;
-      case "Mindfulness, Focus, Meditation":
-        setSubCategoryOptions(["Yoga", "Meditation", "Breathing Exercises"]);
-        break;
-      case "Knowledge, Discovery, Geology":
-        setSubCategoryOptions(["Geology", "Astronomy", "History"]);
-        break;
-      case "Photography, Creativity, Art":
-        setSubCategoryOptions(["Photography", "Painting", "Sculpting"]);
-        break;
-      default:
-        setSubCategoryOptions([]);
-    }
+    useCategory(selectedCategory, setSubCategoryOptions);
   };
 
   const handleLocationTypeChange = (e) => {
@@ -271,35 +252,58 @@ function CreateChallenge() {
           onChange={(e) => handleTitleChange(e.target.value)}
           maxLength={26}
         />
-
         <input
           type="text"
           placeholder="Challenge Description"
           className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
           onChange={(e) => handleDescriptionChange(e.target.value)}
         />
-
         {/* Category */}
+        {/* <p
+          className={`flex basis-2/3 pl-1.5 text-m text-center rounded-sm ${getCategoryColor(
+            challenge.challengeCategory
+          )}`}
+        >
+          {challenge.challengeCategory}
+        </p> */}
+
         <select
           name="category"
           value={category}
-          className="select placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
+          className={`select p-2 ${getCategoryColor(
+            category
+          )} } rounded-md mt-4 w-full `}
           onChange={handleCategory}
         >
           <option value="" disabled>
             Pick a category
           </option>
-          <option>Movement, Hobby, Sports</option>
-          <option>Mindfulness, Focus, Meditation</option>
-          <option>Knowledge, Discovery, Geology</option>
-          <option>Photography, Creativity, Art</option>
+          <option className={`${getCategoryColor("Movement, Hobby, Sports")}`}>
+            Movement, Hobby, Sports
+          </option>
+          <option
+            className={`${getCategoryColor("Mindfulness, Focus, Meditation")}`}
+          >
+            Mindfulness, Focus, Meditation
+          </option>
+          <option
+            className={`${getCategoryColor("Knowledge, Discovery, Geology")}`}
+          >
+            Knowledge, Discovery, Geology
+          </option>
+          <option
+            className={`${getCategoryColor("Photography, Creativity, Art")}`}
+          >
+            Photography, Creativity, Art
+          </option>
         </select>
-
         {/* Subcategory */}
         <select
           name="sub-category"
           value={subCategory}
-          className="select placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
+          className={`select placeholder-gray-500 p-2  ${getSubCategoryColor(
+            subCategory
+          )} rounded-md mt-4 w-full`}
           onChange={(e) => setSubCategory(e.target.value)}
           disabled={!subCategoryOptions.length}
         >
@@ -307,24 +311,30 @@ function CreateChallenge() {
             Pick a subcategory
           </option>
           {subCategoryOptions.map((sub, index) => (
-            <option key={index} value={sub}>
+            <option
+              key={index}
+              value={sub}
+              className={getSubCategoryColor(sub)}
+            >
               {sub}
             </option>
           ))}
         </select>
-
         {/* Standard Level */}
         <select
           name="standardLevel"
           value={standardLevel}
-          className="select placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
+          className={`select placeholder-gray-500 p-2  rounded-md mt-4 w-full ${getLevelColor(
+            standardLevel
+          )}`}
           onChange={(e) => setStandardLevel(e.target.value)}
         >
-          <option>Easy</option>
-          <option>Medium</option>
-          <option>Difficult</option>
+          <option className={` ${getLevelColor("Easy")}`}>Easy</option>
+          <option className={` ${getLevelColor("Medium")}`}>Medium</option>
+          <option className={` ${getLevelColor("Difficult")}`}>
+            Difficult
+          </option>
         </select>
-
         {/* Location */}
         <fieldset className="border border-gray-300 rounded-md p-4 mt-4 w-full">
           <legend className="text-lg font-semibold">Location</legend>
@@ -359,7 +369,6 @@ function CreateChallenge() {
             </div>
           ))}
         </fieldset>
-
         <button
           type="submit"
           className="bg-green-700 px-4 py-2 rounded-md cursor-pointer mt-6 w-full mb-16"
