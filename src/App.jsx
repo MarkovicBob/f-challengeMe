@@ -33,6 +33,7 @@ function App() {
         <Route path="map" element={<MapComponent />} />
         <Route path="takeaphoto" element={<TakeAPhoto />} />
         <Route path="dashboard" element={<AdminPanel />} />
+        <Route path="onboarding" element={<Onboarding />} />
       </Route>
 
       <Route
@@ -44,7 +45,6 @@ function App() {
         }
       >
         <Route index element={<Welcome />} />
-        <Route path="onboarding" element={<Onboarding />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

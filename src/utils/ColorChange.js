@@ -21,3 +21,30 @@ export const getLevelColor = (LevelColor) => {
       return "bg-[#000] text-white";
   }
 };
+
+export const getSubCategoryColor = (subCategory) => {
+  if (
+    [
+      "Hiking",
+      "Jogging",
+      "Cycling",
+      "Climbing",
+      "Kayaking",
+      "Gymnastics",
+      "Fitness",
+      "Fishing",
+    ].includes(subCategory)
+  ) {
+    return "bg-[#FFEC8B] text-black";
+  } else if (
+    ["Yoga", "Meditation", "Breathing Exercises"].includes(subCategory)
+  ) {
+    return "bg-[#FFBBFF] text-black";
+  } else if (["Geology", "Astronomy", "History"].includes(subCategory)) {
+    return "bg-[#B0E2FF] text-black";
+  } else if (["Photography", "Painting", "Sculpting"].includes(subCategory)) {
+    return "bg-[#FFC0CB] text-black";
+  } else {
+    return "bg-gray-200 text-black";
+  }
+};

@@ -10,7 +10,12 @@ import { PiStepsBold } from "react-icons/pi";
 import { TbGeometry } from "react-icons/tb";
 import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
-import { getCategoryColor, getLevelColor } from "../utils/ColorChange";
+
+import {
+  getCategoryColor,
+  getLevelColor,
+  getSubCategoryColor,
+} from "../utils/ColorChange";
 
 function ChallengeDetail() {
   const { id } = useParams();
@@ -24,6 +29,7 @@ function ChallengeDetail() {
           `https://challengeme-server-ra24.onrender.com/api/v1/challenges/${id}`
         );
         setChallenge(res.data.data);
+        // console.log(res.data.data);
       } catch (error) {
         console.error("Error fetching challenge:", error);
       } finally {
@@ -87,8 +93,11 @@ function ChallengeDetail() {
           {challenge.standardLevel}
         </p>
       </div>
-      <p>
-        {/* <MdCategory /> */}
+      <p
+        className={`text-m text-center rounded-sm ${getSubCategoryColor(
+          challenge.challengeSubCategory
+        )}`}
+      >
         {challenge.challengeSubCategory}
       </p>
       <div className="flex flex-row items-center justify-between">
