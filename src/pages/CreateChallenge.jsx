@@ -3,6 +3,7 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 function CreateChallenge() {
   const navigate = useNavigate();
@@ -57,10 +58,21 @@ function CreateChallenge() {
     ];
     setCoordinates(updatedCoordinates);
 
-    // Update the address input field
     const updatedAddresses = [...addresses];
     updatedAddresses[index] = result.result.place_name;
     setAddresses(updatedAddresses);
+  };
+
+  const handleTitleChange = (title) => {
+    if (title.length > 25) {
+      toast.warning("The title must be no more than 26 characters!");
+    } else {
+      setChallengeTitle(title);
+    }
+  };
+
+  const handleDescriptionChange = (description) => {
+    setChallengeDescription(description);
   };
 
   const handleCategory = (e) => {
@@ -153,6 +165,16 @@ function CreateChallenge() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("Challenge Title:", challengeTitle);
+
+    if (challengeTitle.length > 26) {
+      console.log("Title is too long, form will not be submitted.");
+      toast.error("The title must be no more than 26 characters!");
+      return;
+    }
+
+    console.log("Form is valid, proceeding with submission...");
+
     // First get coordinates for all addresses
     const validCoordinates = [];
     for (const address of addresses) {
@@ -237,27 +259,24 @@ function CreateChallenge() {
 
   return (
     <div className="mt-15">
+      <ToastContainer position="top-center" />
       <form
-        className="mt-20 mx-auto flex flex-col justify-center items-center max-w-md"
+        className="mt-20 mx-auto flex flex-col justify-center items-center max-w-md w-[240px]"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-xl font-bold mb-4">Create New Challenge</h2>
-
-        {/* Challenge Title */}
         <input
           type="text"
           placeholder="Challenge Title"
           className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
-          value={challengeTitle}
-          onChange={(e) => setChallengeTitle(e.target.value)}
+          onChange={(e) => handleTitleChange(e.target.value)}
+          maxLength={26}
         />
 
-        {/* Challenge Description */}
-        <textarea
+        <input
+          type="text"
           placeholder="Challenge Description"
-          className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full h-24"
-          value={challengeDescription}
-          onChange={(e) => setChallengeDescription(e.target.value)}
+          className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
+          onChange={(e) => handleDescriptionChange(e.target.value)}
         />
 
         {/* Category */}
@@ -327,21 +346,8 @@ function CreateChallenge() {
               </label>
 
               {/* Geocoder container */}
-              <div
-                ref={(el) => (geocoderContainerRefs.current[index] = el)}
-                className="mb-2"
-              />
 
-              {/* Manual address input
-              <input
-                type="text"
-                placeholder={`Address for ${
-                  locationType === "Point" ? "Location" : `Point ${index + 1}`
-                }`}
-                className="placeholder-gray-500 p-2 text-black bg-white rounded-md w-full"
-                value={address}
-                onChange={(e) => handleAddressChange(index, e.target.value)}
-              /> */}
+              <div ref={(el) => (geocoderContainerRefs.current[index] = el)} />
 
               {/* Show current coordinates */}
               {coordinates[index] && (
@@ -358,7 +364,7 @@ function CreateChallenge() {
           type="submit"
           className="bg-green-700 px-4 py-2 rounded-md cursor-pointer mt-6 w-full mb-16"
         >
-          Create Challenge
+          Create
         </button>
       </form>
     </div>

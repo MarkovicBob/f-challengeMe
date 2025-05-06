@@ -11,6 +11,28 @@
   height: 80vh;
 }
 
+.mapboxgl-ctrl-geocoder {
+  border: 1px solid #ccc !important;
+  border-radius: 8px !important;
+  padding: 7px !important;
+  background-color: #f9f9f9 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  height: 40px;
+}
+
+.mapboxgl-ctrl-geocoder--input {
+  padding: 0 !important;
+  height: 20px !important;
+  font-size: medium;
+  padding-left: 2rem !important;
+  font-size: 0.875rem !important;
+}
+
+.mapboxgl-ctrl-geocoder--icon-search {
+  top: 10px !important;
+  left: 10px;
+}
+
 .interactive-marker {
   position: relative;
   width: 40px;
