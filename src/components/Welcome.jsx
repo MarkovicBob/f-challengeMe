@@ -1,3 +1,4 @@
+import CME from "../assets/challenge me - gray.png";
 import axios from "axios";
 import logo from "../assets/logo.png";
 import { useState } from "react";
@@ -100,7 +101,7 @@ function Welcome() {
     <>
       <div className="flex flex-col min-h-screen items-center-safe justify-center-safe gap-5 m-auto">
         <img src={logo} alt="logo" className="w-50" />
-        <h1>Welcome to Challenge ME</h1>
+        <img src={CME} alt="challengeME" className="w-1/2" />
         <span className="bg-white rounded-md">
           {emailExist && email ? null : (
             <input
@@ -131,7 +132,7 @@ function Welcome() {
         ) : (
           <>
             <button
-              className="bg-green-700 px-4 py-2 rounded-md cursor-pointer"
+              className="bg-[#42A200] px-4 py-2 rounded-md cursor-pointer"
               onClick={emailExist === null ? handleNext : handleLoginOrSignup}
             >
               {emailExist === null ? "Next" : emailExist ? "Login" : "Signup"}
