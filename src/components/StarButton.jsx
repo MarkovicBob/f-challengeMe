@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { GoStar, GoStarFill } from "react-icons/go";
+import { ToastContainer, toast } from "react-toastify";
 import { isFavorited, toggleFavorite } from "../api/favorite";
 
 const StarButton = ({ challengeId }) => {
@@ -27,6 +28,14 @@ const StarButton = ({ challengeId }) => {
     setLoading(true);
     try {
       await toggleFavorite(challengeId, favorited);
+      toast(
+        favorited
+          ? "Challenge removed from Favourites!"
+          : "Challenge added to Favourites!",
+        {
+          type: favorited ? "warning" : "success",
+        }
+      );
     } catch (err) {
       if (err.response?.status !== 409) {
         console.error("Greška:", err);
@@ -45,9 +54,12 @@ const StarButton = ({ challengeId }) => {
     );
 
   return (
-    <button onClick={handleClick} className="text-yellow-500 text-3xl">
-      {favorited ? <GoStarFill /> : <GoStar />}
-    </button>
+    <>
+      <button onClick={handleClick} className="text-yellow-500 text-3xl">
+        {favorited ? <GoStarFill /> : <GoStar />}
+      </button>
+      <ToastContainer position="top-center" />
+    </>
   );
 };
 

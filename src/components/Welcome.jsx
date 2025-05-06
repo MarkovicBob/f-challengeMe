@@ -34,7 +34,7 @@ function Welcome() {
         return element.email;
       });
       if (emails.includes(email)) {
-        toast.info("Email exist. Please enter your password.");
+        toast.info(`Hello ${email}. Please enter your password.`);
         setEmailExist(true);
       } else {
         setEmailExist(false);
@@ -104,10 +104,11 @@ function Welcome() {
         <span className="bg-white rounded-md">
           <input
             type="email"
-            placeholder="Your E-mail"
+            placeholder="Your E-Mail"
             className="placeholder-gray-500 p-2 text-black"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={emailExist !== null}
           />
         </span>
         {emailExist !== null && (
