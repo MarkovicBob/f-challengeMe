@@ -134,7 +134,7 @@ function ChallengeDetail() {
           <FaRepeat /> {challenge.frequence}
         </p>
         <p className="flex flex-row items-center gap-2">
-          <GiDuration /> {challenge.duration} days
+          <GiDuration /> {challenge.duration}
         </p>
         <p className="flex flex-row items-center gap-2">
           <LuCoins /> {challenge.challengeReward} Points
