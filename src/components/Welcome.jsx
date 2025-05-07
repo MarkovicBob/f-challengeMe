@@ -90,7 +90,7 @@ function Welcome() {
     } catch (error) {
       console.error(error);
       toast.error(
-        error.response?.data?.message || "Error during authentication."
+        error.response?.data?.message || "Wrong Password - please try again."
       );
     } finally {
       setLoading(false);
