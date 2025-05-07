@@ -82,7 +82,7 @@ function ChallengeDetail() {
           <MapComponent
             coordinates={{ lat: coordinates[0][0], lng: coordinates[0][1] }}
             isInteractive={false}
-            zoomLevel={12}
+            zoomLevel={10}
             hideControls={true}
           />
         ) : (

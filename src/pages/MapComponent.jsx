@@ -31,11 +31,10 @@ const MapComponent = ({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
       center: coordinates,
-      zoom: coordinates ? 15 : 10,
+      zoom: zoomLevel,
       antialias: true,
     });
 
-    // Добавляем маркер на карту
     new mapboxgl.Marker().setLngLat(coordinates).addTo(map.current);
 
     if (!hideControls) {
