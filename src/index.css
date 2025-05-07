@@ -51,12 +51,9 @@
   left: 10px;
 }
 
-.mapboxgl-ctrl-geocoder--button {
-  top: 2px;
-}
-
 .mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--pin-right > * {
-  background-color: none;
+  background-color: transparent;
+  top: 2px !important;
 }
 
 .interactive-marker {
