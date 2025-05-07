@@ -42,9 +42,21 @@
   font-size: 0.875rem !important;
 }
 
+.mapboxgl-ctrl-geocoder--input:focus {
+  outline: none !important;
+}
+
 .mapboxgl-ctrl-geocoder--icon-search {
   top: 10px !important;
   left: 10px;
+}
+
+.mapboxgl-ctrl-geocoder--button {
+  top: 2px;
+}
+
+.mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--pin-right > * {
+  background-color: none;
 }
 
 .interactive-marker {

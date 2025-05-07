@@ -84,6 +84,9 @@ function CreateChallenge() {
   const handleCategory = (e) => {
     const selectedCategory = e.target.value;
     setCategory(selectedCategory);
+
+    // Сбрасываем подкатегорию при изменении категории
+    setSubCategory("");
     useCategory(selectedCategory, setSubCategoryOptions);
   };
 
@@ -142,7 +145,6 @@ function CreateChallenge() {
       return [0, 0]; // Default coordinates
     }
   };
-  // commit test
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -302,9 +304,9 @@ function CreateChallenge() {
         <select
           name="sub-category"
           value={subCategory}
-          className={`select placeholder-gray-500 p-2  ${getSubCategoryColor(
+          className={`select placeholder-gray-500 p-2 rounded-md mt-4 w-full ${getSubCategoryColor(
             subCategory
-          )} rounded-md mt-4 w-full`}
+          )}`}
           onChange={(e) => setSubCategory(e.target.value)}
           disabled={!subCategoryOptions.length}
         >
@@ -312,11 +314,7 @@ function CreateChallenge() {
             Pick a subcategory
           </option>
           {subCategoryOptions.map((sub, index) => (
-            <option
-              key={index}
-              value={sub}
-              className={getSubCategoryColor(sub)}
-            >
+            <option key={index} value={sub}>
               {sub}
             </option>
           ))}
