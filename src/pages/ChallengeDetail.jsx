@@ -22,6 +22,8 @@ function ChallengeDetail() {
   const { id } = useParams();
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showDescription, setShowDescription] = useState(false);
+  const [challengeStarted, setChallengeStarted] = useState(false);
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -31,6 +33,10 @@ function ChallengeDetail() {
         );
         setChallenge(res.data.data);
         // console.log(res.data.data);
+        const storedStatus = localStorage.getItem(`${id}_inProgress`);
+        if (storedStatus === "true") {
+          setChallengeStarted(true);
+        }
       } catch (error) {
         console.error("Error fetching challenge:", error);
       } finally {
@@ -57,6 +63,8 @@ function ChallengeDetail() {
       if (
         res.data.message === "Successfully added challenge to active challenges"
       ) {
+        localStorage.setItem(`${challenge._id}_inProgress`, "true");
+        setChallengeStarted(true);
         return toast.success("Challenge succsessfully started.");
       }
     } catch (err) {
@@ -66,6 +74,10 @@ function ChallengeDetail() {
         console.error("Error starting challenge", err);
       }
     }
+  };
+
+  const toggleDescription = () => {
+    setShowDescription((prevState) => !prevState);
   };
 
   if (loading) return <p className="mt-15">Loading...</p>;
@@ -91,7 +103,10 @@ function ChallengeDetail() {
             {challenge.challengeTitle}
           </h3>
           <div className="favorite-container">
-            <StarButton challengeId={challenge._id} />
+            <StarButton
+              challengeId={challenge._id}
+              disabled={challengeStarted}
+            />
           </div>
         </div>
       </div>
@@ -128,15 +143,24 @@ function ChallengeDetail() {
       <div className="flex flex-col justify-around text-center p-4 gap-4 mt-5">
         <button
           onClick={handleStartChallenge}
-          className={
-            "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          }
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          disabled={challengeStarted}
         >
-          Start Challenge
+          {challengeStarted ? "In Progress" : "Start Challenge"}
         </button>
-        <button className="bg-gray-500 rounded-md p-2 mb-10">
-          View full Description
+
+        <button
+          onClick={toggleDescription}
+          className="bg-gray-500 rounded-md p-2 mb-10"
+        >
+          {showDescription ? "Show Less" : "View Full Description"}
         </button>
+
+        {showDescription && (
+          <div className="challenge-description mb-15">
+            <p>{challenge.challengeDescription}</p>
+          </div>
+        )}
       </div>
       <ToastContainer position="top-center" />
     </div>
