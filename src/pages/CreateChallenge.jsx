@@ -52,9 +52,16 @@ function CreateChallenge() {
     // Create new geocoder instances
     addresses.forEach((_, index) => {
       if (geocoderContainerRefs.current[index]) {
+        const placeholder =
+          locationType === "Route"
+            ? index === 0
+              ? "Enter Startpoint"
+              : "Enter Endpoint"
+            : "Enter Address";
+
         const geocoder = new MapboxGeocoder({
           accessToken: import.meta.env.VITE_MAPBOX_TOKEN,
-          placeholder: `Enter address for Point ${index + 1}`,
+          placeholder: placeholder,
         });
 
         geocoder.on("result", (e) => handleGeocoderResult(index, e));
@@ -91,6 +98,9 @@ function CreateChallenge() {
   const handleCategory = (e) => {
     const selectedCategory = e.target.value;
     setCategory(selectedCategory);
+
+    // Сбрасываем подкатегорию при изменении категории
+    setSubCategory("");
     useCategory(selectedCategory, setSubCategoryOptions);
   };
 
@@ -149,7 +159,6 @@ function CreateChallenge() {
       return [0, 0]; // Default coordinates
     }
   };
-  // commit test
 
   const handleAutoGenerate = async () => {
     if (!category || !subCategory || addresses[0].trim() === "") {
@@ -345,9 +354,9 @@ function CreateChallenge() {
         <select
           name="sub-category"
           value={subCategory}
-          className={`select placeholder-gray-500 p-2  ${getSubCategoryColor(
+          className={`select placeholder-gray-500 p-2 rounded-md mt-4 w-full ${getSubCategoryColor(
             subCategory
-          )} rounded-md mt-4 w-full`}
+          )}`}
           onChange={(e) => setSubCategory(e.target.value)}
           disabled={!subCategoryOptions.length}
         >
@@ -355,11 +364,7 @@ function CreateChallenge() {
             Pick a subcategory
           </option>
           {subCategoryOptions.map((sub, index) => (
-            <option
-              key={index}
-              value={sub}
-              className={getSubCategoryColor(sub)}
-            >
+            <option key={index} value={sub}>
               {sub}
             </option>
           ))}
@@ -395,10 +400,6 @@ function CreateChallenge() {
 
           {addresses.map((address, index) => (
             <div key={index} className="mt-4">
-              <label className="block mb-1">
-                {locationType === "Point" ? "Location" : `Point ${index + 1}`}
-              </label>
-
               {/* Geocoder container */}
 
               <div ref={(el) => (geocoderContainerRefs.current[index] = el)} />
