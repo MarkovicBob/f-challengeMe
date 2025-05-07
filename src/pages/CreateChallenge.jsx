@@ -45,9 +45,16 @@ function CreateChallenge() {
     // Create new geocoder instances
     addresses.forEach((_, index) => {
       if (geocoderContainerRefs.current[index]) {
+        const placeholder =
+          locationType === "Route"
+            ? index === 0
+              ? "Enter Startpoint"
+              : "Enter Endpoint"
+            : "Enter Address";
+
         const geocoder = new MapboxGeocoder({
           accessToken: import.meta.env.VITE_MAPBOX_TOKEN,
-          placeholder: `Enter address for Point ${index + 1}`,
+          placeholder: placeholder,
         });
 
         geocoder.on("result", (e) => handleGeocoderResult(index, e));
@@ -350,10 +357,6 @@ function CreateChallenge() {
 
           {addresses.map((address, index) => (
             <div key={index} className="mt-4">
-              <label className="block mb-1">
-                {locationType === "Point" ? "Location" : `Point ${index + 1}`}
-              </label>
-
               {/* Geocoder container */}
 
               <div ref={(el) => (geocoderContainerRefs.current[index] = el)} />
