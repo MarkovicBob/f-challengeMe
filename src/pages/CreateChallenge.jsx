@@ -142,6 +142,7 @@ function CreateChallenge() {
       return [0, 0]; // Default coordinates
     }
   };
+  // commit test
 
   const handleSubmit = async (e) => {
     e.preventDefault();
