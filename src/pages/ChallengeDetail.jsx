@@ -11,6 +11,7 @@ import { PiStepsBold } from "react-icons/pi";
 import { TbGeometry } from "react-icons/tb";
 import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
+import MapComponent from "./MapComponent";
 
 import {
   getCategoryColor,
@@ -22,6 +23,7 @@ function ChallengeDetail() {
   const { id } = useParams();
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [coordinates, setCoordinates] = useState(null);
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -30,7 +32,8 @@ function ChallengeDetail() {
           `https://challengeme-server-ra24.onrender.com/api/v1/challenges/${id}`
         );
         setChallenge(res.data.data);
-        // console.log(res.data.data);
+        console.log(res.data.data.location.coordinates[0][0]);
+        setCoordinates(res.data.data.location.coordinates);
       } catch (error) {
         console.error("Error fetching challenge:", error);
       } finally {
@@ -71,13 +74,21 @@ function ChallengeDetail() {
   if (loading) return <p className="mt-15">Loading...</p>;
   if (!challenge) return <p className="mt-15">Challenge not found</p>;
 
+  console.log(coordinates[0]);
   return (
-    <div className="mt-20 p-2 h-[100vh] flex flex-col ">
-      <img
-        src={mapa}
-        alt="challenge/image"
-        className="w-full h-48 object-cover rounded mb-3"
-      />
+    <div className="challenge mt-20 p-2 h-[100vh] flex flex-col ">
+      <div className="w-full h-48 rounded mb-3 overflow-hidden">
+        {coordinates.length > 0 && coordinates[0]?.length === 2 ? (
+          <MapComponent
+            coordinates={{ lat: coordinates[0][0], lng: coordinates[0][1] }}
+            isInteractive={false}
+            zoomLevel={12}
+            hideControls={true}
+          />
+        ) : (
+          <p>Loading map...</p>
+        )}
+      </div>
       <div className="flex flex-col gap-1">
         <p
           className={`w-[70px] text-m text-center rounded-sm ${getLevelColor(

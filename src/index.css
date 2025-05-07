@@ -83,6 +83,10 @@
   animation: pulse 2s infinite;
 }
 
+.challenge .style-controls {
+  display: none;
+}
+
 .style-controls {
   color: #42a200;
   background: rgba(255, 255, 255, 0.9);
