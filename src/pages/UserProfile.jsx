@@ -9,12 +9,18 @@ function UserProfile() {
   });
 
   const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `https://challengeme-server-ra24.onrender.com/api/v1/users/${userId}`
+          `https://challengeme-server-ra24.onrender.com/api/v1/users/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(response.data.data);
 
@@ -32,6 +38,12 @@ function UserProfile() {
     fetchUserData();
   }, [userId]);
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    window.location.href = "/";
+  };
+
   return (
     <div className="container mt-[6rem]">
       <div className="flex flex-row gap-8 justify-between px-8 mt-4">
@@ -42,14 +54,18 @@ function UserProfile() {
             </div>
           </div>
 
-          <button className="btn mt-1.5">Logout</button>
+          <button className="btn mt-1.5" onClick={logout}>
+            Logout
+          </button>
         </div>
 
         <div className="stats">
           <ul>
             <li>{userData.email}</li>
+            Stats:
             <li>{userData.favoriteList.length} Favorite Challenges</li>
             <li>{userData.activeList.length} Active Challenges</li>
+            <li>{userData.activeList.length} Completed</li>
           </ul>
         </div>
       </div>
@@ -59,14 +75,18 @@ function UserProfile() {
         <input
           type="radio"
           name="my_tabs_2"
-          className="tab"
+          className="tab mr-[auto]"
           aria-label="Active Challenges"
         />
         <div className="tab-content border-base-300 bg-base-100 p-10">
           <ul>
             {userData.activeList.map((challenge) => (
-              <li key={challenge._id} className="text-lg">
-                {challenge.challengeRefId.challengeTitle}
+              <li
+                key={challenge._id}
+                className="flex flex-row gap-4 text-lg justify-between"
+              >
+                <span>{challenge.challengeRefId.challengeTitle}</span>
+                <span>{challenge.status}</span>
               </li>
             ))}
           </ul>
