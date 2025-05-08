@@ -89,7 +89,7 @@ function ChallengeDetail() {
   console.log(coordinates[0]);
   return (
     <div className="challenge mt-20 h-[100vh] flex flex-col ">
-      <div className="w-full h-48 mb-3 overflow-hidden">
+      <div className="w-full mb-3 overflow-hidden">
         {coordinates.length > 0 && coordinates[0]?.length === 2 ? (
           <MapComponent
             coordinates={{ lat: coordinates[0][0], lng: coordinates[0][1] }}
