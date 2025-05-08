@@ -88,8 +88,8 @@ function ChallengeDetail() {
 
   console.log(coordinates[0]);
   return (
-    <div className="challenge mt-20 p-2 h-[100vh] flex flex-col ">
-      <div className="w-full h-48 rounded mb-3 overflow-hidden">
+    <div className="challenge mt-20 h-[100vh] flex flex-col ">
+      <div className="w-full h-48 mb-3 overflow-hidden">
         {coordinates.length > 0 && coordinates[0]?.length === 2 ? (
           <MapComponent
             coordinates={{ lat: coordinates[0][0], lng: coordinates[0][1] }}
@@ -101,7 +101,7 @@ function ChallengeDetail() {
           <p>Loading map...</p>
         )}
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1  px-4">
         <p
           className={`w-[70px] text-m text-center rounded-sm ${getLevelColor(
             challenge.standardLevel
@@ -113,7 +113,7 @@ function ChallengeDetail() {
           <h3 className="text-2xl font-extrabold mb-2 pt-4">
             {challenge.challengeTitle}
           </h3>
-          <div className="favorite-container">
+          <div className="favorite-container mt-[15px]">
             <StarButton
               challengeId={challenge._id}
               disabled={challengeStarted}
@@ -121,7 +121,7 @@ function ChallengeDetail() {
           </div>
         </div>
       </div>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 px-4">
         <p
           className={`flex basis-2/3 pl-1.5 text-m text-center rounded-sm ${getCategoryColor(
             challenge.challengeCategory
@@ -138,7 +138,7 @@ function ChallengeDetail() {
         </p>
       </div>
 
-      <p className="pt-3 pb-5">{challenge.shortDescription}</p>
+      <p className="pt-3 pb-5 px-4">{challenge.shortDescription}</p>
 
       <div className="flex flex-row items-center justify-evenly pt-4">
         <p className="flex flex-row items-center gap-2">
