@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 function UserProfile() {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({
+    email: "",
+    favoriteList: [],
+    activeList: [],
+  });
 
   const userId = localStorage.getItem("userId");
 
@@ -14,7 +18,12 @@ function UserProfile() {
         );
         console.log(response.data.data);
 
-        setUserData(response.data.data);
+        setUserData((prevState) => ({
+          ...prevState,
+          email: response.data.data.email,
+          favoriteList: response.data.data.favoriteList,
+          activeList: response.data.data.activeChallenges,
+        }));
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -36,7 +45,13 @@ function UserProfile() {
           <button className="btn mt-1.5">Logout</button>
         </div>
 
-        <div className="stats">email blabla blabla</div>
+        <div className="stats">
+          <ul>
+            <li>{userData.email}</li>
+            <li>{userData.favoriteList.length} Favorite Challenges</li>
+            <li>{userData.activeList.length} Active Challenges</li>
+          </ul>
+        </div>
       </div>
 
       {/* name of each tab group should be unique */}
@@ -48,7 +63,13 @@ function UserProfile() {
           aria-label="Active Challenges"
         />
         <div className="tab-content border-base-300 bg-base-100 p-10">
-          Active Challenges
+          <ul>
+            {userData.activeList.map((challenge) => (
+              <li key={challenge._id} className="text-lg">
+                {challenge.challengeRefId.challengeTitle}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <input
@@ -59,7 +80,13 @@ function UserProfile() {
           defaultChecked
         />
         <div className="tab-content border-base-300 bg-base-100 p-10">
-          Favorite Challenges
+          <ul>
+            {userData.favoriteList.map((challenge) => (
+              <li key={challenge._id} className="text-lg">
+                {challenge.challengeRefId.challengeTitle}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
