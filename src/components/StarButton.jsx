@@ -3,7 +3,7 @@ import { RiBookmark3Fill, RiBookmark3Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
 import { isFavorited, toggleFavorite } from "../api/favorite";
 
-const StarButton = ({ challengeId }) => {
+const StarButton = ({ challengeId, disabled }) => {
   const [favorited, setFavorited] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -25,6 +25,10 @@ const StarButton = ({ challengeId }) => {
 
   const handleClick = async (e) => {
     e.stopPropagation();
+    if (disabled) {
+      toast.warning("You cannot favorite a challenge while it's in progress!");
+      return;
+    }
     setLoading(true);
     try {
       await toggleFavorite(challengeId, favorited);
@@ -55,7 +59,11 @@ const StarButton = ({ challengeId }) => {
 
   return (
     <>
-      <button onClick={handleClick} className="text-yellow-500 text-3xl">
+      <button
+        onClick={handleClick}
+        className="text-yellow-500 text-3xl"
+        disabled={disabled}
+      >
         {favorited ? <RiBookmark3Fill /> : <RiBookmark3Line />}
       </button>
       <ToastContainer position="top-center" />
