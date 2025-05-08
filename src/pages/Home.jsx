@@ -8,6 +8,7 @@ import { getCategoryColor, getLevelColor } from "../utils/ColorChange";
 function Home() {
   const [loading, setLoading] = useState(true);
   const [challenges, setChallenges] = useState([]);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
   // const [filled, setFilled] = useState(false);
   // const [filledStars, setFilledStars] = useState({});
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function Home() {
         const res = await axios.get(
           `https://challengeme-server-ra24.onrender.com/api/v1/challenges`
         );
-        // console.log("API Response:", res.data.data);
+        console.log("API Response:", res.data.data);
         setChallenges(res.data.data);
       } catch (error) {
         console.error("Fetching error", error);
@@ -36,10 +37,20 @@ function Home() {
   if (loading) {
     return <div className="mt-15">Loading...</div>;
   }
+  const handleStarButtonClick = (e, challengeId) => {
+    e.stopPropagation();
+    setIsButtonLoading(true); // Set button as loading when clicked
+
+    // Simulate AI data processing or some async logic
+    setTimeout(() => {
+      // Assuming some async operation here (like saving or fetching AI data)
+      setIsButtonLoading(false); // Reset button loading after operation
+      // You can add your custom logic here for AI processing
+    }, 2000); // Simulate a 2-second delay
+  };
 
   return (
     <div className="p-4 mt-13 mb-9">
-      {/* <h1 className="text-2xl font-bold mb-4 text-center">Challenges</h1> */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {challenges.map((challenge) => (
           <div
@@ -48,7 +59,7 @@ function Home() {
             className="border p-4 rounded shadow-sm"
           >
             <img
-              src="https://www.bergsteigerschule-watzmann.de/cdn/uploads/bergwandern-lernen-in-berchtesgaden.jpg"
+              src={challenge.imageUrl}
               alt="challenge/image"
               className="w-full h-48 object-cover rounded mb-3"
             />
@@ -72,20 +83,16 @@ function Home() {
               <h3 className="text-xl font-semibold mb-2">
                 {challenge.challengeTitle}
               </h3>
-              <div onClick={(e) => e.stopPropagation()}>
-                <StarButton challengeId={challenge._id} />
+              <div onClick={(e) => handleStarButtonClick(e, challenge._id)}>
+                {/* Conditionally render button content based on loading state */}
+                {isButtonLoading ? (
+                  <div className="text-center">Loading...</div>
+                ) : (
+                  <StarButton challengeId={challenge._id} />
+                )}
               </div>
             </div>
             <p className="mb-2">{challenge.shortDescription}</p>
-            {/* <p>
-              <strong>Full Description:</strong>{" "}
-              {challenge.challengeDescription}
-            </p> */}
-            {/* <p><strong>Subcategory:</strong> {challenge.challengeSubCategory}</p> */}
-            {/* <p><strong>Fitness Level:</strong> {challenge.fitnessLevel}</p> */}
-            {/* <p><strong>Frequency:</strong> {challenge.frequence}</p> */}
-            {/* <p><strong>Duration:</strong> {challenge.duration} days</p> */}
-            {/* <p><strong>Reward:</strong> {challenge.challengeReward} Points</p> */}
           </div>
         ))}
       </div>
