@@ -15,30 +15,22 @@ function Footer() {
 
   return (
     <div className="fixed bottom-0 z-50 w-full bg-[#42a200]">
-      <div className="flex flex-row justify-around items-center p-2">
+      <div className="flex flex-row justify-between items-center p-4 ml-6 mr-6">
         <NavLink
           className={({ isActive }) =>
             isChallengeDetailPage ? "" : isActive ? "active" : ""
           }
           to={"/start/home"}
         >
-          <span className="text-3xl ">
+          <span className="text-4xl ">
             <FaList />
           </span>
         </NavLink>
-        {/* <NavLink
-          className={({ isActive }) => (isActive ? "active" : "")}
-          to={"/start/takeaphoto"}
-        >
-          <span className="text-3xl" to={"/start/home"}>
-          <FaQuestion />
-          </span>
-        </NavLink> */}
         <NavLink
           className={({ isActive }) => (isActive ? "active" : "")}
           to={"/start/createchallenge"}
         >
-          <span className="text-3xl">
+          <span className="text-4xl">
             <FaPlus />
           </span>
         </NavLink>
@@ -46,7 +38,7 @@ function Footer() {
           className={({ isActive }) => (isActive ? "active" : "")}
           to={"/start/map"}
         >
-          <span className="text-3xl">
+          <span className="text-4xl">
             <FaMapLocation />
           </span>
         </NavLink>
