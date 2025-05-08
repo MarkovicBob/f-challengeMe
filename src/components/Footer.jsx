@@ -1,8 +1,9 @@
 import React from "react";
-import { BiSolidCameraPlus } from "react-icons/bi";
-import { FaListAlt, FaPlusSquare } from "react-icons/fa";
-import { FaCircleUser } from "react-icons/fa6";
-import { ImMap } from "react-icons/im";
+import { FaQuestion } from "react-icons/fa6";
+import { FaList } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa6";
+import { FaMapLocation } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -13,7 +14,7 @@ function Footer() {
   );
 
   return (
-    <div className="fixed bottom-0 z-50 w-full bg-gray-700">
+    <div className="fixed bottom-0 z-50 w-full bg-[#42a200]">
       <div className="flex flex-row justify-around items-center p-2">
         <NavLink
           className={({ isActive }) =>
@@ -22,23 +23,23 @@ function Footer() {
           to={"/start/home"}
         >
           <span className="text-3xl ">
-            <FaListAlt />
+            <FaList />
           </span>
         </NavLink>
-        <NavLink
+        {/* <NavLink
           className={({ isActive }) => (isActive ? "active" : "")}
           to={"/start/takeaphoto"}
         >
           <span className="text-3xl" to={"/start/home"}>
-            <BiSolidCameraPlus />
+          <FaQuestion />
           </span>
-        </NavLink>
+        </NavLink> */}
         <NavLink
           className={({ isActive }) => (isActive ? "active" : "")}
           to={"/start/createchallenge"}
         >
           <span className="text-3xl">
-            <FaPlusSquare />
+            <FaPlus />
           </span>
         </NavLink>
         <NavLink
@@ -46,7 +47,7 @@ function Footer() {
           to={"/start/map"}
         >
           <span className="text-3xl">
-            <ImMap />
+            <FaMapLocation />
           </span>
         </NavLink>
         <NavLink
@@ -54,7 +55,7 @@ function Footer() {
           to={"/start/dashboard"}
         >
           <span className="text-3xl">
-            <FaCircleUser />
+            <FaUser />
           </span>
         </NavLink>
       </div>
