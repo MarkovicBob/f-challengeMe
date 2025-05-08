@@ -5,7 +5,7 @@ import ChallengeProgress from "./pages/ChallengeProgress";
 import CreateChallenge from "./pages/CreateChallenge";
 import Home from "./pages/Home";
 import MainLayout from "./Layout/MainLayout";
-import MapComponent from "./pages/MapComponent";
+import FullMapPage from "./pages/FullMapPage";
 import NotFound from "./pages/NotFound";
 import Onboarding from "./pages/Onboarding";
 import ProtectedLayout from "./Layout/ProtectedLayout";
@@ -30,7 +30,7 @@ function App() {
         <Route path="home/:id" element={<ChallengeDetail />} />
         <Route path="challengeprogress" element={<ChallengeProgress />} />
         <Route path="createchallenge" element={<CreateChallenge />} />
-        <Route path="map" element={<MapComponent />} />
+        <Route path="map" element={<FullMapPage />} />
         <Route path="takeaphoto" element={<TakeAPhoto />} />
         <Route path="dashboard" element={<AdminPanel />} />
         <Route path="onboarding" element={<Onboarding />} />

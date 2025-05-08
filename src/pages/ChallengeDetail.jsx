@@ -11,6 +11,7 @@ import { PiStepsBold } from "react-icons/pi";
 import { TbGeometry } from "react-icons/tb";
 import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
+import MapComponent from "./MapComponent";
 
 import {
   getCategoryColor,
@@ -22,6 +23,7 @@ function ChallengeDetail() {
   const { id } = useParams();
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [coordinates, setCoordinates] = useState(null);
   const [showDescription, setShowDescription] = useState(false);
   const [challengeStarted, setChallengeStarted] = useState(false);
 
@@ -32,7 +34,8 @@ function ChallengeDetail() {
           `https://challengeme-server-ra24.onrender.com/api/v1/challenges/${id}`
         );
         setChallenge(res.data.data);
-        // console.log(res.data.data);
+        console.log(res.data.data.location.coordinates[0][0]);
+        setCoordinates(res.data.data.location.coordinates);
         const storedStatus = localStorage.getItem(`${id}_inProgress`);
         if (storedStatus === "true") {
           setChallengeStarted(true);
@@ -83,14 +86,22 @@ function ChallengeDetail() {
   if (loading) return <p className="mt-15">Loading...</p>;
   if (!challenge) return <p className="mt-15">Challenge not found</p>;
 
+  console.log(coordinates[0]);
   return (
-    <div className="mt-20 p-2 h-[100vh] flex flex-col ">
-      <img
-        src={mapa}
-        alt="challenge/image"
-        className="w-full h-48 object-cover rounded mb-3"
-      />
-      <div className="flex flex-col gap-1">
+    <div className="challenge mt-20 h-[100vh] flex flex-col ">
+      <div className="w-full mb-3 overflow-hidden">
+        {coordinates.length > 0 && coordinates[0]?.length === 2 ? (
+          <MapComponent
+            coordinates={{ lat: coordinates[0][0], lng: coordinates[0][1] }}
+            isInteractive={false}
+            zoomLevel={10}
+            hideControls={true}
+          />
+        ) : (
+          <p>Loading map...</p>
+        )}
+      </div>
+      <div className="flex flex-col gap-1  px-4">
         <p
           className={`w-[70px] text-m text-center rounded-sm ${getLevelColor(
             challenge.standardLevel
@@ -102,7 +113,7 @@ function ChallengeDetail() {
           <h3 className="text-2xl font-extrabold mb-2 pt-4">
             {challenge.challengeTitle}
           </h3>
-          <div className="favorite-container">
+          <div className="favorite-container mt-[15px]">
             <StarButton
               challengeId={challenge._id}
               disabled={challengeStarted}
@@ -110,7 +121,7 @@ function ChallengeDetail() {
           </div>
         </div>
       </div>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 px-4">
         <p
           className={`flex basis-2/3 pl-1.5 text-m text-center rounded-sm ${getCategoryColor(
             challenge.challengeCategory
@@ -127,7 +138,7 @@ function ChallengeDetail() {
         </p>
       </div>
 
-      <p className="pt-3 pb-5">{challenge.shortDescription}</p>
+      <p className="pt-3 pb-5 px-4">{challenge.shortDescription}</p>
 
       <div className="flex flex-row items-center justify-evenly pt-4">
         <p className="flex flex-row items-center gap-2">
