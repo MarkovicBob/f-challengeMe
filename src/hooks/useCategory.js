@@ -13,7 +13,7 @@ export const useCategory = (selectedCategory, setSubCategoryOptions) => {
       ]);
       break;
     case "Mindfulness, Focus, Meditation":
-      setSubCategoryOptions(["Yoga", "Meditation", "Breathing Exercises"]);
+      setSubCategoryOptions(["Yoga", "Meditation", "Breathing"]);
       break;
     case "Knowledge, Discovery, Geology":
       setSubCategoryOptions(["Geology", "Astronomy", "History"]);

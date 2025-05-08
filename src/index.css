@@ -11,6 +11,15 @@
   height: 100vh;
 }
 
+.challenge .map-container {
+  margin-top: 0.3rem;
+  height: 20vh;
+}
+
+.challenge {
+  margin-top: 60px;
+}
+
 .mapboxgl-ctrl-top-right {
   right: 60px;
   top: 30px;
@@ -81,6 +90,10 @@
   border: 2px solid #e11d48;
   border-radius: 50%;
   animation: pulse 2s infinite;
+}
+
+.challenge .style-controls {
+  display: none;
 }
 
 .style-controls {

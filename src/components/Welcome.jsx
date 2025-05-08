@@ -89,9 +89,15 @@ function Welcome() {
       }
     } catch (error) {
       console.error(error);
-      toast.error(
-        error.response?.data?.message || "Wrong Password - please try again."
-      );
+      // Проверяем статус ошибки
+      if (error.response?.status === 500) {
+        toast.error("Wrong Password - please try again.");
+      } else {
+        toast.error(
+          error.response?.data?.message ||
+            "Server error. Please try again later."
+        );
+      }
     } finally {
       setLoading(false);
     }
