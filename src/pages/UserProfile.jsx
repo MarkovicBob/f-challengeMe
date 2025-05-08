@@ -1,0 +1,69 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+function UserProfile() {
+  const [userData, setUserData] = useState(null);
+
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `https://challengeme-server-ra24.onrender.com/api/v1/users/${userId}`
+        );
+        console.log(response.data.data);
+
+        setUserData(response.data.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  return (
+    <div className="container mt-[6rem]">
+      <div className="flex flex-row gap-8 justify-between px-8 mt-4">
+        <div className="flex flex-col">
+          <div className="avatar">
+            <div className="mask mask-squircle w-24">
+              <img src="https://img.daisyui.com/images/profile/demo/distracted1@192.webp" />
+            </div>
+          </div>
+
+          <button className="btn mt-1.5">Logout</button>
+        </div>
+
+        <div className="stats">email blabla blabla</div>
+      </div>
+
+      {/* name of each tab group should be unique */}
+      <div className="tabs tabs-border px-8 mt-4">
+        <input
+          type="radio"
+          name="my_tabs_2"
+          className="tab"
+          aria-label="Active Challenges"
+        />
+        <div className="tab-content border-base-300 bg-base-100 p-10">
+          Active Challenges
+        </div>
+
+        <input
+          type="radio"
+          name="my_tabs_2"
+          className="tab"
+          aria-label="Favorite Challenges"
+          defaultChecked
+        />
+        <div className="tab-content border-base-300 bg-base-100 p-10">
+          Favorite Challenges
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default UserProfile;
