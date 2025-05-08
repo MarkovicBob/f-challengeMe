@@ -29,7 +29,7 @@ function Navbar() {
   return (
     <>
       <nav className="flex items-center w-full bg-gray-500 fixed top-0 z-50">
-        <div className="ml-1 mt-1">
+        <div className="ml-4 mt-2 mb-2">
           <img className="w-15" src={logo} alt="logo" />
         </div>
         <div className="absolute left-1/2 transform -translate-x-1/2">
