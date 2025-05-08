@@ -2,6 +2,7 @@ import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import { GiMagicHat } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useCategory } from "../hooks/useCategory.js";
@@ -57,7 +58,7 @@ function CreateChallenge() {
             ? index === 0
               ? "Enter Startpoint"
               : "Enter Endpoint"
-            : "Enter Address";
+            : "Enter Location";
 
         const geocoder = new MapboxGeocoder({
           accessToken: import.meta.env.VITE_MAPBOX_TOKEN,
@@ -83,17 +84,17 @@ function CreateChallenge() {
     setAddresses(updatedAddresses);
   };
 
-  const handleTitleChange = (title) => {
-    if (title.length > 25) {
-      toast.warning("The title must be no more than 26 characters!");
-    } else {
-      setChallengeTitle(title);
-    }
-  };
+  // const handleTitleChange = (title) => {
+  //   if (title.length > 25) {
+  //     toast.warning("The title must be no more than 26 characters!");
+  //   } else {
+  //     setChallengeTitle(title);
+  //   }
+  // };
 
-  const handleDescriptionChange = (description) => {
-    setChallengeDescription(description);
-  };
+  // const handleDescriptionChange = (description) => {
+  //   setChallengeDescription(description);
+  // };
 
   const handleCategory = (e) => {
     const selectedCategory = e.target.value;
@@ -290,13 +291,13 @@ function CreateChallenge() {
   };
 
   return (
-    <div className="mt-15">
+    <div className="flex flex-col h-[100vh] items-center justify-start mt-15">
       <ToastContainer position="top-center" />
       <form
         className="mt-20 mx-auto flex flex-col justify-center items-center max-w-md w-[240px]"
         onSubmit={handleSubmit}
       >
-        <input
+        {/* <input
           type="text"
           placeholder="Challenge Title"
           className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
@@ -310,7 +311,8 @@ function CreateChallenge() {
           className="placeholder-gray-500 p-2 text-black bg-white rounded-md mt-4 w-full"
           onChange={(e) => handleDescriptionChange(e.target.value)}
           value={aiShortDes || challengeDescription}
-        />
+        /> */}
+
         {/* Category */}
         {/* <p
           className={`flex basis-2/3 pl-1.5 text-m text-center rounded-sm ${getCategoryColor(
@@ -350,6 +352,7 @@ function CreateChallenge() {
             Photography, Creativity, Art
           </option>
         </select>
+
         {/* Subcategory */}
         <select
           name="sub-category"
@@ -369,8 +372,9 @@ function CreateChallenge() {
             </option>
           ))}
         </select>
+
         {/* Standard Level */}
-        <select
+        {/* <select
           name="standardLevel"
           value={standardLevel}
           className={`select placeholder-gray-500 p-2  rounded-md mt-4 w-full ${getLevelColor(
@@ -383,49 +387,59 @@ function CreateChallenge() {
           <option className={` ${getLevelColor("Difficult")}`}>
             Difficult
           </option>
-        </select>
+        </select> */}
+
         {/* Location */}
-        <fieldset className="border border-gray-300 rounded-md p-4 mt-4 w-full">
-          <legend className="text-lg font-semibold">Location</legend>
+        {/* <fieldset className="border border-gray-300 rounded-md p-4 mt-4 w-full">
+          <legend className="text-lg font-semibold">Location</legend> */}
 
-          <select
-            name="locationType"
-            value={locationType}
-            className="select placeholder-gray-500 p-2 text-black bg-white rounded-md mt-2 w-full"
-            onChange={handleLocationTypeChange}
-          >
-            <option value="Point">Point</option>
-            <option value="Route">Route</option>
-          </select>
-
-          {addresses.map((address, index) => (
-            <div key={index} className="mt-4">
-              {/* Geocoder container */}
-
-              <div ref={(el) => (geocoderContainerRefs.current[index] = el)} />
-
-              {/* Show current coordinates */}
-              {coordinates[index] && (
-                <div className="text-xs mt-1">
-                  Coordinates: [{coordinates[index][0].toFixed(5)},{" "}
-                  {coordinates[index][1].toFixed(5)}]
-                </div>
-              )}
-            </div>
-          ))}
-        </fieldset>
-        <button
-          type="submit"
-          className="bg-green-700 px-4 py-2 rounded-md cursor-pointer mt-6 w-full mb-16"
+        {/* <select
+          name="locationType"
+          value={locationType}
+          className="select placeholder-gray-500 p-2 text-black bg-white rounded-md mt-2 w-full"
+          onChange={handleLocationTypeChange}
         >
-          Create
-        </button>
-        <button
+          <option value="Point">Point</option>
+          <option value="Route">Route</option>
+        </select> */}
+
+        {addresses.map((address, index) => (
+          <div key={index} className="mt-4">
+            {/* Geocoder container */}
+
+            <div ref={(el) => (geocoderContainerRefs.current[index] = el)} />
+
+            {/* Show current coordinates */}
+            {/* {coordinates[index] && (
+              <div className="text-xs mt-1">
+                Coordinates: [{coordinates[index][0].toFixed(5)},{" "}
+                {coordinates[index][1].toFixed(5)}]
+              </div>
+            )} */}
+          </div>
+        ))}
+        {/* </fieldset> */}
+        {/* <button
           type="button"
-          className="bg-blue-700 text-white px-4 py-2 rounded-md cursor-pointer mt-2 w-full"
+          className="bg-[#42a200] text-white px-4 py-2 rounded-md cursor-pointer mt-2 w-full"
           onClick={handleAutoGenerate}
         >
           🎯 Generate automatically with AI
+        </button> */}
+        <button
+          type={aiTitle ? "submit" : "button"}
+          className="bg-[#42a200] w-full h-30 px-4 py-2 rounded-md cursor-pointer mt-15 mb-16 flex flex-col justify-center items-center"
+          onClick={handleAutoGenerate}
+        >
+          {aiTitle ? (
+            "Create Challenge"
+          ) : (
+            <>
+              <GiMagicHat size={40} className="mr-2" />{" "}
+              {/* Add margin to the right of the icon */}
+              Generate the remaining details with AI
+            </>
+          )}
         </button>
       </form>
     </div>
