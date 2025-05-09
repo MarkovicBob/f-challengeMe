@@ -64,8 +64,8 @@ function Welcome() {
             password,
           }
         );
-        localStorage.setItem("token", res.data.token);
         const userId = res.data?.user?._id;
+        localStorage.setItem("token", res.data.token);
         localStorage.setItem("userId", userId);
         toast.success("Logged in successfully!");
         setTimeout(() => {
@@ -80,7 +80,8 @@ function Welcome() {
           }
         );
         localStorage.setItem("token", res.data.token);
-        const userId = res.data?.user?._id;
+        console.log(res.data);
+        const userId = res.data?.userObject?._id;
         localStorage.setItem("userId", userId);
         toast.success("Account created successfully!");
         setTimeout(() => {

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { GiMagicHat } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
+import { BounceLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import { useCategory } from "../hooks/useCategory.js";
 
@@ -30,6 +31,7 @@ function CreateChallenge() {
   const [aiDuration, setAiDuration] = useState("");
   const [aiStandardLevel, setAiStandardLevel] = useState("");
   const [aiImageUrl, setAiImageUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   // Initialize coordinates properly based on the location type
   const [coordinates, setCoordinates] = useState([
     [0, 0], // For Point: [lat, lng]
@@ -167,7 +169,7 @@ function CreateChallenge() {
       toast.error("Please select category, subcategory, and location first.");
       return;
     }
-
+    setLoading(true);
     try {
       const res = await axios.post(
         "https://challengeme-server-ra24.onrender.com/api/openai/generate",
@@ -194,6 +196,8 @@ function CreateChallenge() {
     } catch (err) {
       toast.error("Error generating challenge.");
       console.error("AI error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -431,15 +435,20 @@ function CreateChallenge() {
         </button> */}
         <button
           type={aiTitle ? "submit" : "button"}
-          className="bg-[#42a200] w-full h-30 px-4 py-2 rounded-md cursor-pointer mt-15 mb-16 flex flex-col justify-center items-center"
+          className={`
+    w-full h-30 px-4 py-2 rounded-md cursor-pointer mt-15 mb-16
+    flex flex-col justify-center items-center
+    ${aiTitle ? "bg-[#42a200]" : loading ? "bg-transparent" : "bg-blue-500"}
+  `}
           onClick={handleAutoGenerate}
         >
           {aiTitle ? (
-            "Create Challenge"
+            "Open Your New AI Challenge"
+          ) : loading ? (
+            <BounceLoader color="green" />
           ) : (
             <>
-              <GiMagicHat size={40} className="mr-2" />{" "}
-              {/* Add margin to the right of the icon */}
+              <GiMagicHat size={40} className="mr-2" />
               Generate the remaining details with AI
             </>
           )}
