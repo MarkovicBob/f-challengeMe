@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { RiBookmark3Fill, RiBookmark3Line } from "react-icons/ri";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { isFavorited, toggleFavorite } from "../api/favorite";
 
 const StarButton = ({ challengeId, disabled }) => {
@@ -69,7 +69,6 @@ const StarButton = ({ challengeId, disabled }) => {
       >
         {favorited ? <RiBookmark3Fill /> : <RiBookmark3Line />}
       </button>
-      <ToastContainer position="top-center" />
     </>
   );
 };
