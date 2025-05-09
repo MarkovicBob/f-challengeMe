@@ -4,6 +4,7 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import axios from "axios";
 import mapboxgl from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -15,10 +16,13 @@ const MapComponent = ({
 }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const geocoderRef = useRef(null);
+
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState([]);
   const [mapStyle, setMapStyle] = useState("streets-v12");
+  const navigate = useNavigate();
 
   const addMarkersToMap = () => {
     if (!map.current || !locations.length || !challenges.length) return;
@@ -52,7 +56,11 @@ const MapComponent = ({
           .setLngLat([lng, lat])
           .setPopup(
             new mapboxgl.Popup({ offset: 25 }).setHTML(
-              `<h3>${challenges[index]?.challengeTitle || "Challenge"}</h3>`
+              `<a href="http://localhost:5173/start/home/${
+                challenges[index]?._id
+              }" rel="noopener noreferrer">
+       ${challenges[index]?.challengeTitle || "Challenge"}
+     </a>`
             )
           )
           .addTo(map.current);
@@ -83,6 +91,15 @@ const MapComponent = ({
 
       addMarkersToMap();
 
+      // Удаляем старый геокодер, если есть
+      if (geocoderRef.current) {
+        geocoderRef.current.off("results", () => {}); // очищаем события, если нужно
+        geocoderRef.current.clear(); // очищает поля
+        geocoderRef.current = null;
+        const existing = document.querySelector(".mapboxgl-ctrl-geocoder");
+        if (existing) existing.remove(); // удаляет DOM элемент
+      }
+
       if (!hideControls) {
         new MapboxGeocoder({
           accessToken: mapboxgl.accessToken,
@@ -108,6 +125,15 @@ const MapComponent = ({
           .addTo(map.current);
 
         addMarkersToMap();
+
+        // Удаляем старый геокодер, если есть
+        if (geocoderRef.current) {
+          geocoderRef.current.off("results", () => {}); // очищаем события, если нужно
+          geocoderRef.current.clear(); // очищает поля
+          geocoderRef.current = null;
+          const existing = document.querySelector(".mapboxgl-ctrl-geocoder");
+          if (existing) existing.remove(); // удаляет DOM элемент
+        }
 
         if (!hideControls) {
           new MapboxGeocoder({
