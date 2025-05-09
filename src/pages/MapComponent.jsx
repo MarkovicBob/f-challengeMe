@@ -1,9 +1,9 @@
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import axios from "axios";
 import mapboxgl from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -20,36 +20,20 @@ const MapComponent = ({
   const [locations, setLocations] = useState([]);
   const [mapStyle, setMapStyle] = useState("streets-v12");
 
-  const changeMapStyle = (newStyle) => {
-    setMapStyle(newStyle);
-    if (map.current) {
-      map.current.setStyle(`mapbox://styles/mapbox/${newStyle}`);
-    }
-  };
-
   const addMarkersToMap = () => {
     if (!map.current || !locations.length || !challenges.length) return;
 
     locations.forEach((location, index) => {
       try {
         let coords = [...location];
-
-        // Распаковываем вложенные массивы
         while (Array.isArray(coords[0]) && coords.length === 1) {
           coords = [...coords[0]];
         }
 
-        // Проверка валидности
         if (!Array.isArray(coords) || coords.length !== 2) return;
 
         let [a, b] = coords.map(Number);
-
-        // Автоматическое определение порядка координат
-        let lngLat =
-          Math.abs(a) <= 90 && Math.abs(b) <= 180
-            ? [b, a] // [lat, lng] → [lng, lat]
-            : [a, b]; // [lng, lat] как надо
-
+        let lngLat = Math.abs(a) <= 90 && Math.abs(b) <= 180 ? [b, a] : [a, b];
         const [lng, lat] = lngLat;
 
         if (
@@ -76,6 +60,68 @@ const MapComponent = ({
         console.error("Marker error:", e);
       }
     });
+  };
+
+  const setupMap = (centerCoords) => {
+    if (map.current) {
+      map.current.remove();
+    }
+
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: `mapbox://styles/mapbox/${mapStyle}`,
+      center: centerCoords,
+      zoom: zoomLevel,
+      interactive: isInteractive,
+    });
+
+    map.current.on("load", () => {
+      new mapboxgl.Marker({ color: "#FF0000" })
+        .setLngLat(centerCoords)
+        .setPopup(new mapboxgl.Popup().setText("You are here"))
+        .addTo(map.current);
+
+      addMarkersToMap();
+
+      if (!hideControls) {
+        new MapboxGeocoder({
+          accessToken: mapboxgl.accessToken,
+          mapboxgl: mapboxgl,
+          marker: false,
+          proximity: {
+            longitude: centerCoords[0],
+            latitude: centerCoords[1],
+          },
+        }).addTo(map.current);
+      }
+    });
+  };
+
+  const changeMapStyle = (newStyle) => {
+    setMapStyle(newStyle);
+    if (map.current) {
+      map.current.setStyle(`mapbox://styles/mapbox/${newStyle}`);
+      map.current.on("style.load", () => {
+        new mapboxgl.Marker({ color: "#FF0000" })
+          .setLngLat(coordinates)
+          .setPopup(new mapboxgl.Popup().setText("You are here"))
+          .addTo(map.current);
+
+        addMarkersToMap();
+
+        if (!hideControls) {
+          new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+            marker: false,
+            proximity: {
+              longitude: coordinates[0],
+              latitude: coordinates[1],
+            },
+          }).addTo(map.current);
+        }
+      });
+    }
   };
 
   useEffect(() => {
@@ -106,66 +152,28 @@ const MapComponent = ({
   useEffect(() => {
     if (!mapContainer.current || !coordinates || loading) return;
 
-    if (map.current) {
-      map.current.remove();
-    }
-
     let center;
 
     if (
-      typeof coordinates === "object" &&
-      coordinates !== null &&
-      "lat" in coordinates &&
-      "lng" in coordinates
-    ) {
-      center = [coordinates.lng, coordinates.lat];
-    } else if (
       Array.isArray(coordinates) &&
       coordinates.length === 2 &&
       typeof coordinates[0] === "number" &&
       typeof coordinates[1] === "number"
     ) {
-      // Автоопределение порядка
-      center =
-        Math.abs(coordinates[0]) <= 90 && Math.abs(coordinates[1]) <= 180
-          ? [coordinates[1], coordinates[0]]
-          : [...coordinates];
+      center = coordinates; // koristi direktno [lng, lat]
+    } else if (
+      typeof coordinates === "object" &&
+      coordinates !== null &&
+      "lng" in coordinates &&
+      "lat" in coordinates
+    ) {
+      center = [coordinates.lng, coordinates.lat];
     } else {
       console.error("Invalid coordinates format", coordinates);
       return;
     }
 
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: `mapbox://styles/mapbox/${mapStyle}`,
-      center: coordinates,
-      zoom: zoomLevel,
-      interactive: isInteractive,
-    });
-
-    map.current.on("load", () => {
-      // Маркер пользователя
-      new mapboxgl.Marker({ color: "#FF0000" })
-        .setLngLat(coordinates)
-        .setPopup(new mapboxgl.Popup().setText("You are here"))
-        .addTo(map.current);
-
-      addMarkersToMap();
-
-      if (!hideControls) {
-        new MapboxGeocoder({
-          accessToken: mapboxgl.accessToken,
-          mapboxgl: mapboxgl,
-          marker: false,
-          proximity: {
-            longitude: center[0],
-            latitude: center[1],
-          },
-        }).addTo(map.current);
-      }
-    });
-
-    return () => map.current?.remove();
+    setupMap(center);
   }, [coordinates, loading, mapStyle, locations]);
 
   return (
