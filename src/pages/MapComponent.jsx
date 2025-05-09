@@ -144,6 +144,12 @@ const MapComponent = ({
     });
 
     map.current.on("load", () => {
+      // Маркер пользователя
+      new mapboxgl.Marker({ color: "#FF0000" })
+        .setLngLat(coordinates)
+        .setPopup(new mapboxgl.Popup().setText("You are here"))
+        .addTo(map.current);
+
       addMarkersToMap();
 
       if (!hideControls) {
