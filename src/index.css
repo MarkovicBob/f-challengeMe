@@ -47,6 +47,10 @@
   top: 20px;
 }
 
+.mapboxgl-ctrl-geocoder.mapboxgl-ctrl + .mapboxgl-ctrl-geocoder.mapboxgl-ctrl {
+  display: none;
+}
+
 .mapboxgl-ctrl-geocoder--input {
   padding: 0 !important;
   height: 20px !important;
@@ -71,8 +75,8 @@
 
 .mapboxgl-popup-content {
   color: black;
-  padding: 2rem !important;
-  font-size: large;
+  padding: 1rem !important;
+  font-size: small;
 }
 
 .mapboxgl-popup-content a {
