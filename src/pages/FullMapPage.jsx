@@ -20,7 +20,7 @@ const FullMapPage = () => {
         <MapComponent
           coordinates={userLocation}
           isInteractive={true}
-          zoomLevel={15}
+          zoomLevel={10}
         />
       ) : (
         <p>Loading map...</p>

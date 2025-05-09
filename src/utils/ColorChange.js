@@ -36,9 +36,7 @@ export const getSubCategoryColor = (subCategory) => {
     ].includes(subCategory)
   ) {
     return "bg-[#FFEC8B] text-black";
-  } else if (
-    ["Yoga", "Meditation", "Breathing Exercises"].includes(subCategory)
-  ) {
+  } else if (["Yoga", "Meditation", "Breathing"].includes(subCategory)) {
     return "bg-[#FFBBFF] text-black";
   } else if (["Geology", "Astronomy", "History"].includes(subCategory)) {
     return "bg-[#B0E2FF] text-black";
