@@ -1,3 +1,4 @@
+import MapComponent from "./MapComponent";
 import StarButton from "../components/StarButton";
 import axios from "axios";
 import mapa from "../assets/mapa.jpg";
@@ -11,7 +12,6 @@ import { PiStepsBold } from "react-icons/pi";
 import { TbGeometry } from "react-icons/tb";
 import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
-import MapComponent from "./MapComponent";
 
 import {
   getCategoryColor,
@@ -114,10 +114,7 @@ function ChallengeDetail() {
             {challenge.challengeTitle}
           </h3>
           <div className="favorite-container mt-[15px]">
-            <StarButton
-              challengeId={challenge._id}
-              disabled={challengeStarted}
-            />
+            <StarButton challengeId={challenge._id} />
           </div>
         </div>
       </div>
