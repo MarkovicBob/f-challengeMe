@@ -1,5 +1,5 @@
 import "react-toastify/dist/ReactToastify.css";
-import AdminPanel from "./components/AdminPanel";
+import UserProfile from "./pages/UserProfile";
 import ChallengeDetail from "./pages/ChallengeDetail";
 import ChallengeProgress from "./pages/ChallengeProgress";
 import CreateChallenge from "./pages/CreateChallenge";
@@ -32,7 +32,7 @@ function App() {
         <Route path="createchallenge" element={<CreateChallenge />} />
         <Route path="map" element={<FullMapPage />} />
         <Route path="takeaphoto" element={<TakeAPhoto />} />
-        <Route path="dashboard" element={<AdminPanel />} />
+        <Route path="dashboard" element={<UserProfile />} />
         <Route path="onboarding" element={<Onboarding />} />
       </Route>
 
