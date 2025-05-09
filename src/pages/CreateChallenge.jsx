@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { GiMagicHat } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
-import { BounceLoader } from "react-spinners";
+import { BounceLoader, RingLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import { useCategory } from "../hooks/useCategory.js";
 
@@ -433,26 +433,50 @@ function CreateChallenge() {
         >
           🎯 Generate automatically with AI
         </button> */}
-        <button
-          type={aiTitle ? "submit" : "button"}
-          className={`
-    w-full h-30 px-4 py-2 rounded-md cursor-pointer mt-15 mb-16
+        {aiTitle ? (
+          <button
+            type="submit"
+            className="
+            w-full h-30 px-4 py-2 rounded-md cursor-pointer mt-15 mb-16
+            flex flex-col justify-center items-center bg-[#42a200]"
+          >
+            Open Your New AI Challenge
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              className="w-full h-30 px-4 py-2 rounded-md cursor-pointer mt-15 mb-16
     flex flex-col justify-center items-center
-    ${aiTitle ? "bg-[#42a200]" : loading ? "bg-transparent" : "bg-blue-500"}
-  `}
-          onClick={handleAutoGenerate}
-        >
-          {aiTitle ? (
+   bg-blue-500"
+              onClick={handleAutoGenerate}
+              disabled={loading}
+            >
+              {/* {aiTitle ? (
             "Open Your New AI Challenge"
           ) : loading ? (
-            <BounceLoader color="green" />
+            <RingLoader color="green" />
           ) : (
             <>
               <GiMagicHat size={40} className="mr-2" />
-              Generate the remaining details with AI
+              Generate your AI Challenge
             </>
-          )}
-        </button>
+          )} */}
+              {loading ? (
+                <RingLoader color="white" />
+              ) : (
+                <>
+                  <GiMagicHat size={40} className="mr-2" />
+                  Generate your AI Challenge
+                </>
+              )}
+            </button>
+          </>
+        )}
+
+        {/* {!loading && aiTitle ? (
+          <button>"Open Your New AI Challenge"</button>
+        ) : null} */}
       </form>
     </div>
   );
