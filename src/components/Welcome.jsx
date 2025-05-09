@@ -4,7 +4,7 @@ import logo from "../assets/logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { BounceLoader } from "react-spinners";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 function Welcome() {
   const [email, setEmail] = useState("");
@@ -109,6 +109,11 @@ function Welcome() {
       <div className="flex flex-col min-h-screen items-center-safe justify-center-safe gap-5 m-auto">
         <img src={logo} alt="logo" className="w-50" />
         <img src={CME} alt="challengeME" className="w-1/2" />
+        {emailExist === false && (
+          <p className="text-center text-white max-w-xs">
+            Hey, looks like you're new here. Let's create an account...
+          </p>
+        )}
         <span className="bg-white rounded-md">
           {emailExist && email ? null : (
             <input
@@ -146,7 +151,6 @@ function Welcome() {
             </button>
           </>
         )}
-        <ToastContainer position="top-center" />
       </div>
     </>
   );

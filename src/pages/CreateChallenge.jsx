@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { GiMagicHat } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import { BounceLoader, RingLoader } from "react-spinners";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useCategory } from "../hooks/useCategory.js";
 
 import {
@@ -299,7 +299,6 @@ function CreateChallenge() {
 
   return (
     <div className="flex flex-col h-[100vh] items-center justify-start mt-15">
-      <ToastContainer position="top-center" />
       <form
         className="mt-20 mx-auto flex flex-col justify-center items-center max-w-md w-[240px]"
         onSubmit={handleSubmit}

@@ -1,4 +1,3 @@
-import "react-toastify/dist/ReactToastify.css";
 import MapComponent from "./MapComponent";
 import StarButton from "../components/StarButton";
 import axios from "axios";
@@ -11,7 +10,7 @@ import { MdCategory, MdOutlineSportsGymnastics } from "react-icons/md";
 import { PiStepsBold } from "react-icons/pi";
 import { TbGeometry } from "react-icons/tb";
 import { useParams } from "react-router";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import {
   getCategoryColor,
@@ -68,6 +67,9 @@ function ChallengeDetail() {
       ) {
         localStorage.setItem(`${challenge._id}_inProgress`, "true");
         setChallengeStarted(true);
+        toast.success("Challenge started.", {
+          autoClose: 2000,
+        });
       }
     } catch (err) {
       if (err.response && err.response.status === 409) {
@@ -169,7 +171,6 @@ function ChallengeDetail() {
           </div>
         )}
       </div>
-      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 }
