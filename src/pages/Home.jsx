@@ -37,7 +37,7 @@ function Home() {
   if (loading) {
     return <div className="mt-15">Loading...</div>;
   }
-  const handleStarButtonClick = (e, challengeId) => {
+  const handleStarButtonClick = (e) => {
     e.stopPropagation();
     setIsButtonLoading(true); // Set button as loading when clicked
 

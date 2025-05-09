@@ -1,7 +1,7 @@
+import "react-toastify/dist/ReactToastify.css";
 import MapComponent from "./MapComponent";
 import StarButton from "../components/StarButton";
 import axios from "axios";
-import mapa from "../assets/mapa.jpg";
 import { useEffect, useState } from "react";
 import { FaRepeat } from "react-icons/fa6";
 import { GiDuration, GiMeditation, GiPaintBrush } from "react-icons/gi";
@@ -68,7 +68,6 @@ function ChallengeDetail() {
       ) {
         localStorage.setItem(`${challenge._id}_inProgress`, "true");
         setChallengeStarted(true);
-        return toast.success("Challenge succsessfully started.");
       }
     } catch (err) {
       if (err.response && err.response.status === 409) {
@@ -170,7 +169,7 @@ function ChallengeDetail() {
           </div>
         )}
       </div>
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 }
