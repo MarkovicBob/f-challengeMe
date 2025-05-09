@@ -24,7 +24,7 @@ function Home() {
           `https://challengeme-server-ra24.onrender.com/api/v1/challenges`
         );
         console.log("API Response:", res.data.data);
-        setChallenges(res.data.data);
+        setChallenges([...res.data.data].reverse());
       } catch (error) {
         console.error("Fetching error", error);
       } finally {
