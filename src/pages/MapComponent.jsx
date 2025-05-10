@@ -60,15 +60,16 @@ const MapComponent = ({
         const popupNode = document.createElement("div");
         // console.log(getSubCategoryColor(subCategory).split(" "));
 
-        popupNode.innerHTML = `
-          <div class="${getSubCategoryColor(
-            subCategory
-          )} rounded-full text-center text-sm font-semibold px-2 py-1 mb-2">
-            ${challengeTitle}
-          </div>
-        `;
+        // Применяем класс к popupNode напрямую
+        popupNode.className = `${getSubCategoryColor(
+          subCategory
+        )}  text-center  font-semibold p-4 rounded`;
 
-        popupNode.querySelector("div")?.addEventListener("click", () => {
+        // Устанавливаем содержимое
+        popupNode.textContent = challengeTitle;
+
+        // Добавляем обработчик клика на весь popup
+        popupNode.addEventListener("click", () => {
           if (challengeId) {
             navigate(`/start/home/${challengeId}`);
           }
@@ -98,9 +99,12 @@ const MapComponent = ({
     });
 
     map.current.on("load", () => {
+      const popupNode = document.createElement("div");
+      popupNode.className = "p-4 color-black";
+      popupNode.textContent = "You are here";
       new mapboxgl.Marker({ color: "#FF0000" })
         .setLngLat(centerCoords)
-        .setPopup(new mapboxgl.Popup().setText("You are here"))
+        .setPopup(new mapboxgl.Popup({ offset: 25 }).setDOMContent(popupNode))
         .addTo(map.current);
 
       addMarkersToMap();

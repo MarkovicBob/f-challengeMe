@@ -74,9 +74,19 @@
 }
 
 .mapboxgl-popup-content {
-  color: black;
-  padding: 1rem !important;
+  padding: 0 !important;
   font-size: small;
+  border: none;
+  border-radius: none;
+  color: black;
+}
+
+.mapboxgl-popup-content::before {
+  background-color: transparent;
+}
+
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  border-top-color: transparent !important;
 }
 
 .mapboxgl-popup-content a {
@@ -84,9 +94,8 @@
 }
 
 .mapboxgl-popup-close-button {
-  top: 10px !important;
-  right: 10px !important;
-  display: none !important;
+  top: 0px !important;
+  right: 5px !important;
 }
 
 .interactive-marker {
