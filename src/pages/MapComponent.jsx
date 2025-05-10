@@ -5,6 +5,7 @@ import axios from "axios";
 import mapboxgl from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getSubCategoryColor } from "../utils/ColorChange.js";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -52,17 +53,30 @@ const MapComponent = ({
           return;
         }
 
+        const challengeId = challenges[index]?._id;
+        const challengeTitle = challenges[index]?.challengeTitle || "Challenge";
+        const subCategory = challenges[index]?.challengeSubCategory;
+
+        const popupNode = document.createElement("div");
+        // console.log(getSubCategoryColor(subCategory).split(" "));
+
+        popupNode.innerHTML = `
+          <div class="${getSubCategoryColor(
+            subCategory
+          )} rounded-full text-center text-sm font-semibold px-2 py-1 mb-2">
+            ${challengeTitle}
+          </div>
+        `;
+
+        popupNode.querySelector("div")?.addEventListener("click", () => {
+          if (challengeId) {
+            navigate(`/start/home/${challengeId}`);
+          }
+        });
+
         new mapboxgl.Marker()
           .setLngLat([lng, lat])
-          .setPopup(
-            new mapboxgl.Popup({ offset: 25 }).setHTML(
-              `<a href="http://localhost:5173/start/home/${
-                challenges[index]?._id
-              }" rel="noopener noreferrer">
-       ${challenges[index]?.challengeTitle || "Challenge"}
-     </a>`
-            )
-          )
+          .setPopup(new mapboxgl.Popup({ offset: 25 }).setDOMContent(popupNode))
           .addTo(map.current);
       } catch (e) {
         console.error("Marker error:", e);
