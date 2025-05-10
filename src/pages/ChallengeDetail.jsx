@@ -3,12 +3,8 @@ import StarButton from "../components/StarButton";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaRepeat } from "react-icons/fa6";
-import { GiDuration, GiMeditation, GiPaintBrush } from "react-icons/gi";
-import { GoStar, GoStarFill } from "react-icons/go";
+import { GiDuration } from "react-icons/gi";
 import { LuCoins } from "react-icons/lu";
-import { MdCategory, MdOutlineSportsGymnastics } from "react-icons/md";
-import { PiStepsBold } from "react-icons/pi";
-import { TbGeometry } from "react-icons/tb";
 import { useParams } from "react-router";
 import { toast } from "react-toastify";
 
@@ -25,6 +21,7 @@ function ChallengeDetail() {
   const [coordinates, setCoordinates] = useState(null);
   const [showDescription, setShowDescription] = useState(false);
   const [challengeStarted, setChallengeStarted] = useState(false);
+  const [challengeCompleted, setChallengeCompleted] = useState(false);
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -32,12 +29,17 @@ function ChallengeDetail() {
         const res = await axios.get(
           `https://challengeme-server-ra24.onrender.com/api/v1/challenges/${id}`
         );
-        setChallenge(res.data.data);
-        console.log(res.data.data.location.coordinates[0][0]);
-        setCoordinates(res.data.data.location.coordinates);
-        const storedStatus = localStorage.getItem(`${id}_inProgress`);
-        if (storedStatus === "true") {
+        const data = res.data.data;
+        setChallenge(data);
+        setCoordinates(data.location.coordinates);
+
+        const started = localStorage.getItem(`${id}_inProgress`);
+        const completed = localStorage.getItem(`${id}_completed`);
+
+        if (started === "true") setChallengeStarted(true);
+        if (completed === "true") {
           setChallengeStarted(true);
+          setChallengeCompleted(true);
         }
       } catch (error) {
         console.error("Error fetching challenge:", error);
@@ -56,40 +58,55 @@ function ChallengeDetail() {
         `https://challengeme-server-ra24.onrender.com/api/v1/users/${userId}/activeList/${challenge._id}`,
         {},
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Challenge started:", res.data);
-      if (
-        res.data.message === "Successfully added challenge to active challenges"
-      ) {
+      if (res.data.message.includes("added")) {
         localStorage.setItem(`${challenge._id}_inProgress`, "true");
         setChallengeStarted(true);
-        toast.success("Challenge started.", {
-          autoClose: 2000,
-        });
+        toast.success("Challenge started.");
       }
     } catch (err) {
-      if (err.response && err.response.status === 409) {
-        return toast.error("Challenge already started.");
+      if (err.response?.status === 409) {
+        toast.error("Challenge already started.");
       } else {
         console.error("Error starting challenge", err);
       }
     }
   };
 
-  const toggleDescription = () => {
-    setShowDescription((prevState) => !prevState);
+  const handleCompleteChallenge = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        `https://challengeme-server-ra24.onrender.com/api/v1/users/${userId}/activeList/${challenge._id}/complete`,
+        { status: "completed" },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (res.data.message.includes("completed")) {
+        localStorage.setItem(`${challenge._id}_completed`, "true");
+        setChallengeCompleted(true);
+        toast.success("Challenge completed.");
+      }
+    } catch (err) {
+      if (err.response?.status === 409) {
+        toast.error("Challenge already completed.");
+      } else {
+        console.error("Error completing challenge", err);
+      }
+    }
   };
+
+  const toggleDescription = () => setShowDescription((prev) => !prev);
 
   if (loading) return <p className="mt-15">Loading...</p>;
   if (!challenge) return <p className="mt-15">Challenge not found</p>;
 
-  console.log(coordinates[0]);
   return (
-    <div className="challenge mt-20 h-[100vh] flex flex-col ">
+    <div className="challenge mt-20 h-[100vh] flex flex-col">
       <div className="w-full mb-3 overflow-hidden">
         {coordinates.length > 0 && coordinates[0]?.length === 2 ? (
           <MapComponent
@@ -102,7 +119,8 @@ function ChallengeDetail() {
           <p>Loading map...</p>
         )}
       </div>
-      <div className="flex flex-col gap-1  px-4">
+
+      <div className="flex flex-col gap-1 px-4">
         <p
           className={`w-[70px] text-m text-center rounded-sm ${getLevelColor(
             challenge.standardLevel
@@ -114,11 +132,10 @@ function ChallengeDetail() {
           <h3 className="text-2xl font-extrabold mb-2 pt-4">
             {challenge.challengeTitle}
           </h3>
-          <div className="favorite-container mt-[15px]">
-            <StarButton challengeId={challenge._id} />
-          </div>
+          <StarButton challengeId={challenge._id} disabled={challengeStarted} />
         </div>
       </div>
+
       <div className="flex flex-row gap-2 px-4">
         <p
           className={`flex basis-2/3 pl-1.5 text-m text-center rounded-sm ${getCategoryColor(
@@ -149,14 +166,28 @@ function ChallengeDetail() {
           <LuCoins /> {challenge.challengeReward} Points
         </p>
       </div>
+
       <div className="flex flex-col justify-around text-center p-4 gap-4 mt-5">
         <button
           onClick={handleStartChallenge}
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          disabled={challengeStarted}
+          disabled={challengeStarted || challengeCompleted}
         >
-          {challengeStarted ? "In Progress" : "Start Challenge"}
+          {challengeCompleted
+            ? "Completed"
+            : challengeStarted
+            ? "In Progress"
+            : "Start Challenge"}
         </button>
+
+        {challengeStarted && !challengeCompleted && (
+          <button
+            onClick={handleCompleteChallenge}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            Complete
+          </button>
+        )}
 
         <button
           onClick={toggleDescription}
