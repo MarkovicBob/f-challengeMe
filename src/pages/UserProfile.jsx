@@ -6,6 +6,9 @@ function UserProfile() {
     email: "",
     favoriteList: [],
     activeList: [],
+    stats: {
+      challengesCompleted: 0,
+    },
   });
 
   const userId = localStorage.getItem("userId");
@@ -22,13 +25,17 @@ function UserProfile() {
             },
           }
         );
-        console.log(response.data.data);
+        console.log(response.data.data.stats.challengesCompleted);
 
         setUserData((prevState) => ({
           ...prevState,
           email: response.data.data.email,
           favoriteList: response.data.data.favoriteList,
           activeList: response.data.data.activeChallenges,
+          stats: {
+            ...prevState.stats,
+            challengesCompleted: response.data.data.stats.challengesCompleted,
+          },
         }));
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -65,7 +72,7 @@ function UserProfile() {
             Stats:
             <li>{userData.favoriteList.length} Favorite Challenges</li>
             <li>{userData.activeList.length} Active Challenges</li>
-            <li>{userData.activeList.length} Completed</li>
+            <li>{userData.stats.challengesCompleted} Completed</li>
           </ul>
         </div>
       </div>
