@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../Context/ThemeContext";
 
 function UserProfile() {
   const [userData, setUserData] = useState({
@@ -10,25 +12,7 @@ function UserProfile() {
       challengesCompleted: 0,
     },
   });
-
-  const [isDark, setIsDark] = useState(() => {
-    const savedTheme = localStorage.getItem("theme");
-    return savedTheme === "dark" || !savedTheme;
-  });
-
-  const toggleTheme = (e) => {
-    const isChecked = e.target.checked;
-    const newTheme = isChecked ? "dark" : "light";
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
-    setIsDark(isChecked);
-  };
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const theme = isDark ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [isDark]);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
@@ -86,10 +70,20 @@ function UserProfile() {
         </div>
 
         <div className="stats flex flex-col">
-          <label className="toggle theme-controller text-base-content mt-4 w-15 h-9">
+          <div className="flex justify-end px-4">
+            <button
+              onClick={toggleTheme}
+              className="px-4 py-2 rounded-md border text-sm shadow-sm mt-2
+      dark:bg-[#333] dark:text-white dark:border-[#555]
+      bg-white text-black border-gray-400"
+            >
+              Switch to {theme === "dark" ? "🌞 Light Mode" : "🌙 Dark Mode"}
+            </button>
+          </div>
+          {/* <label className="toggle theme-controller text-base-content mt-4 w-15 h-9">
             <input
               type="checkbox"
-              checked={isDark}
+              checked={localStorage.getItem("theme" === "dark")}
               onChange={toggleTheme}
               className="theme-controller "
             />
@@ -131,7 +125,7 @@ function UserProfile() {
                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
               </g>
             </svg>
-          </label>
+          </label> */}
           <ul>
             <li>{userData.email}</li>
             Stats:
