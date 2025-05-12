@@ -1,11 +1,12 @@
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GiMagicHat } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import { BounceLoader, RingLoader } from "react-spinners";
 import { toast } from "react-toastify";
+import { ThemeContext } from "../Context/ThemeContext.jsx";
 import { useCategory } from "../hooks/useCategory.js";
 
 import {
@@ -37,6 +38,7 @@ function CreateChallenge() {
     [0, 0], // For Point: [lat, lng]
   ]);
 
+  const { theme } = useContext(ThemeContext);
   const [addresses, setAddresses] = useState([""]); // Start with one address for Point
   const geocoderContainerRefs = useRef([]);
 
@@ -298,7 +300,11 @@ function CreateChallenge() {
   };
 
   return (
-    <div className="flex flex-col h-[100vh] items-center justify-start mt-15">
+    <div
+      className={`flex flex-col h-[100vh] items-center justify-start mt-15 ${
+        theme === "dark" ? "bg-[#292929]" : "bg-white"
+      }`}
+    >
       <form
         className="mt-20 mx-auto flex flex-col justify-center items-center max-w-md w-[240px]"
         onSubmit={handleSubmit}

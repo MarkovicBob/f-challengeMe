@@ -1,5 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState, useRef } from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../Context/ThemeContext";
 import { getSubCategoryColor, getLevelColor } from "../utils/ColorChange";
 
 function UserProfile() {
@@ -12,6 +15,7 @@ function UserProfile() {
     },
     profilePictureUrl: "",
   });
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -171,7 +175,63 @@ function UserProfile() {
           </button>
         </div>
 
-        <div className="stats">
+        <div className="stats flex flex-col">
+          <div className="flex justify-end px-4">
+            <button
+              onClick={toggleTheme}
+              className="px-4 py-2 rounded-md border text-sm shadow-sm mt-2
+      dark:bg-[#333] dark:text-white dark:border-[#555]
+      bg-white text-black border-gray-400"
+            >
+              Switch to {theme === "dark" ? "🌞 Light Mode" : "🌙 Dark Mode"}
+            </button>
+          </div>
+          {/* <label className="toggle theme-controller text-base-content mt-4 w-15 h-9">
+            <input
+              type="checkbox"
+              checked={localStorage.getItem("theme" === "dark")}
+              onChange={toggleTheme}
+              className="theme-controller "
+            />
+            <svg
+              aria-label="sun"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </g>
+            </svg>
+            <svg
+              aria-label="moon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+              </g>
+            </svg>
+          </label> */}
           <ul>
             <li>{userData.favoriteList.length} Favourite</li>
             <li>{userData.activeList.length} Active</li>
@@ -180,7 +240,6 @@ function UserProfile() {
         </div>
       </div>
 
-      {/* name of each tab group should be unique */}
       <div className="tabs tabs-border mt-4 flex flex-row gap-4 px-8">
         <input
           type="radio"

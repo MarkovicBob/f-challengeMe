@@ -1,54 +1,50 @@
 import React from "react";
-import { FaQuestion } from "react-icons/fa6";
-import { FaList } from "react-icons/fa6";
-import { FaUser } from "react-icons/fa6";
-import { FaMapLocation } from "react-icons/fa6";
+import { FaQuestion, FaList, FaUser, FaMapLocation } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 function Footer() {
   const location = useLocation();
-  const isChallengeDetailPage = /^\/start\/home\/[a-zA-Z0-9]+$/.test(
-    location.pathname
-  );
+  const isChallengeDetailPage = /^\/start\/home\/[a-zA-Z0-9]+$/.test(location.pathname);
+
+  const iconWrapperStyle = "bg-[#292929] w-14 h-14 rounded-xl flex items-center justify-center";
 
   return (
-    <div className="fixed bottom-0 z-50 w-full bg-[#42a200]">
-      <div className="flex flex-row justify-between items-center p-4 ml-6 mr-6">
+    <div className="fixed bottom-0 z-50 w-full h-20 bg-[#42a200]">
+      <div className="flex flex-row justify-between items-center p-3 ml-8 mr-8">
         <NavLink
           className={({ isActive }) =>
             isChallengeDetailPage ? "" : isActive ? "active" : ""
           }
           to={"/start/home"}
         >
-          <span className="text-4xl ">
-            <FaList />
-          </span>
+          <div className={iconWrapperStyle}>
+            <FaList className="text-3xl text-white" />
+          </div>
         </NavLink>
         <NavLink
           className={({ isActive }) => (isActive ? "active" : "")}
           to={"/start/createchallenge"}
         >
-          <span className="text-4xl">
-            <FaPlus />
-          </span>
+          <div className={iconWrapperStyle}>
+            <FaPlus className="text-3xl text-white" />
+          </div>
         </NavLink>
         <NavLink
           className={({ isActive }) => (isActive ? "active" : "")}
           to={"/start/map"}
         >
-          <span className="text-4xl">
-            <FaMapLocation />
-          </span>
+          <div className={iconWrapperStyle}>
+            <FaMapLocation className="text-3xl text-white" />
+          </div>
         </NavLink>
         <NavLink
           className={({ isActive }) => (isActive ? "active" : "")}
           to={"/start/dashboard"}
         >
-          <span className="text-3xl">
-            <FaUser />
-          </span>
+          <div className={iconWrapperStyle}>
+            <FaUser className="text-3xl text-white" />
+          </div>
         </NavLink>
       </div>
     </div>

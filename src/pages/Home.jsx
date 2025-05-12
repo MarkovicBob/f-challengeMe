@@ -50,13 +50,13 @@ function Home() {
   };
 
   return (
-    <div className="p-4 mt-13 mb-9">
+    <div className="p-4 mt-13 mb-9 bg-[#292929]">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {challenges.map((challenge) => (
           <div
             key={challenge._id}
             onClick={() => handleClick(challenge._id)}
-            className="border p-4 rounded shadow-sm"
+            className="border-b-[2px] border-[#DCDCDC] p-4 rounded shadow-sm"
           >
             <img
               src={challenge.imageUrl}
