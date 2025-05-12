@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 function UserProfile() {
   const [userData, setUserData] = useState({
@@ -10,6 +10,25 @@ function UserProfile() {
       challengesCompleted: 0,
     },
   });
+
+  const [isDark, setIsDark] = useState(() => {
+    const savedTheme = localStorage.getItem("theme");
+    return savedTheme === "dark" || !savedTheme;
+  });
+
+  const toggleTheme = (e) => {
+    const isChecked = e.target.checked;
+    const newTheme = isChecked ? "dark" : "light";
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    setIsDark(isChecked);
+  };
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const theme = isDark ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [isDark]);
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
@@ -66,7 +85,53 @@ function UserProfile() {
           </button>
         </div>
 
-        <div className="stats">
+        <div className="stats flex flex-col">
+          <label className="toggle theme-controller text-base-content mt-4 w-15 h-9">
+            <input
+              type="checkbox"
+              checked={isDark}
+              onChange={toggleTheme}
+              className="theme-controller "
+            />
+            <svg
+              aria-label="sun"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </g>
+            </svg>
+            <svg
+              aria-label="moon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+              </g>
+            </svg>
+          </label>
           <ul>
             <li>{userData.email}</li>
             Stats:
@@ -77,7 +142,6 @@ function UserProfile() {
         </div>
       </div>
 
-      {/* name of each tab group should be unique */}
       <div className="tabs tabs-border px-8 mt-4">
         <input
           type="radio"

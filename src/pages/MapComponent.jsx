@@ -22,8 +22,11 @@ const MapComponent = ({
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState([]);
-  const [mapStyle, setMapStyle] = useState("streets-v12");
   const navigate = useNavigate();
+  const [mapStyle, setMapStyle] = useState(() => {
+    const theme = localStorage.getItem("theme") || "dark";
+    return theme === "dark" ? "dark-v11" : "outdoors-v12";
+  });
 
   const addMarkersToMap = () => {
     if (!map.current || !locations.length || !challenges.length) return;
