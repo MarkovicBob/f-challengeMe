@@ -26,7 +26,7 @@ function UserProfile() {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/v1/users/${userId}`,
+          `https://challengeme-server-ra24.onrender.com/api/v1/users/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -86,7 +86,7 @@ function UserProfile() {
       setError("");
 
       const response = await axios.post(
-        "http://localhost:8000/file-upload",
+        `https://challengeme-server-ra24.onrender.com/api/v1/users/${userId}/profile-picture`,
         formData,
         {
           headers: {
@@ -96,12 +96,12 @@ function UserProfile() {
         }
       );
 
-      console.log(response);
+      console.log(response.data);
 
       // Update user data with new profile picture
       setUserData((prevData) => ({
         ...prevData,
-        profilePictureUrl: response.data.location,
+        profilePictureUrl: response.data.user.profilePictureUrl,
       }));
 
       // Reset form state
