@@ -28,7 +28,7 @@ function Navbar() {
 
   return (
     <>
-      <nav className="flex items-center w-full bg-gray-700 fixed top-0 z-50">
+      <nav className="flex items-center w-full bg-[#292929] fixed top-[-1px] z-50 border-b-[2px] border-[#686565]">
         <div className="ml-3 mt-2 mb-2">
           <img className="w-10" src={logo} alt="logo" />
         </div>

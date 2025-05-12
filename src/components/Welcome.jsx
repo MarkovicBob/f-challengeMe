@@ -106,7 +106,7 @@ function Welcome() {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen items-center-safe justify-center-safe gap-5 m-auto">
+      <div className="bg-[#292929] flex flex-col min-h-screen items-center-safe justify-center-safe gap-5 m-auto">
         <img src={logo} alt="logo" className="w-50" />
         <img src={CME} alt="challengeME" className="w-1/2" />
         {emailExist === false && (

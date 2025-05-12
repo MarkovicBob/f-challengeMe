@@ -298,7 +298,7 @@ function CreateChallenge() {
   };
 
   return (
-    <div className="flex flex-col h-[100vh] items-center justify-start mt-15">
+    <div className="bg-[#292929] flex flex-col h-[100vh] items-center justify-start mt-15">
       <form
         className="mt-20 mx-auto flex flex-col justify-center items-center max-w-md w-[240px]"
         onSubmit={handleSubmit}
