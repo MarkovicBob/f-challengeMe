@@ -108,7 +108,7 @@ function Welcome() {
     <>
       <div className="bg-[#292929] flex flex-col min-h-screen items-center-safe justify-center-safe gap-5 m-auto">
         <img src={logo} alt="logo" className="w-50" />
-        <img src={CME} alt="challengeME" className="w-1/2" />
+        <img src={CME} alt="challengeME" className="w-[10rem]" />
         {emailExist === false && (
           <p className="text-center text-white max-w-xs">
             Hey, looks like you're new here. Let's create an account...
@@ -119,7 +119,7 @@ function Welcome() {
             <input
               type="email"
               placeholder="Your E-Mail"
-              className="placeholder-gray-500 p-2 text-black"
+              className="placeholder-gray-500 p-2 text-black inset-shadow-sm/30"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={emailExist !== null}
@@ -144,7 +144,7 @@ function Welcome() {
         ) : (
           <>
             <button
-              className="bg-[#42A200] px-4 py-2 rounded-md cursor-pointer"
+              className="bg-[#42A200] px-4 py-2 rounded-md cursor-pointer active:inset-ring-2 "
               onClick={emailExist === null ? handleNext : handleLoginOrSignup}
             >
               {emailExist === null ? "Next" : emailExist ? "Login" : "Signup"}
