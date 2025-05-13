@@ -108,9 +108,11 @@ function ChallengeDetail() {
   if (!challenge) return <p className="mt-15">Challenge not found</p>;
 
   return (
-    <div className={` challenge mt-20 h-[100vh] flex flex-col ${
+    <div
+      className={` challenge  h-[100vh] flex flex-col ${
         theme === "dark" ? "bg-[#292929]" : "bg-[#FFFAF0] text-[#292929]"
-      }`}>
+      }`}
+    >
       <div className="w-full mb-3 overflow-hidden">
         {coordinates.length > 0 && coordinates[0]?.length === 2 ? (
           <MapComponent
@@ -196,8 +198,8 @@ function ChallengeDetail() {
         <button
           onClick={toggleDescription}
           className={`rounded-md p-2 mb-10 ${
-        theme === "dark" ? "bg-gray-500" : "bg-gray-300"
-      }`}
+            theme === "dark" ? "bg-gray-500" : "bg-gray-300"
+          }`}
         >
           {showDescription ? "Show Less" : "View Full Description"}
         </button>

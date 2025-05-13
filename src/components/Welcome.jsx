@@ -12,6 +12,7 @@ function Welcome() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
 
   const handleNext = async () => {
     const emailRegex =
@@ -49,7 +50,9 @@ function Welcome() {
     }
   };
 
-  const handleLoginOrSignup = async () => {
+  const handleLoginOrSignup = async (e) => {
+    console.log(e.target.value);
+
     if (password.trim() === "") {
       toast.warning("Password field is empty");
       return;
@@ -104,6 +107,16 @@ function Welcome() {
     }
   };
 
+  const validatePassword = (e) => {
+    const passwordRegex = /^(?=.*[A-Z]).{8,}$/;
+    if (passwordRegex.test(e.target.value)) {
+      setPassword(e.target.value);
+      setIsPasswordValid(true);
+    } else {
+      setIsPasswordValid(false);
+    }
+  };
+
   return (
     <>
       <div className="bg-[#292929] flex flex-col min-h-screen items-center-safe justify-center-safe gap-5 m-auto">
@@ -127,17 +140,27 @@ function Welcome() {
           )}
         </span>
         {emailExist !== null && (
-          <span className="bg-white rounded-md">
-            <input
-              type="password"
-              placeholder={`${
-                emailExist ? "Enter your password" : "Create new password"
-              }`}
-              className="placeholder-gray-500 p-2 text-black"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </span>
+          <>
+            <span className="bg-white rounded-md">
+              <input
+                type="password"
+                placeholder={`${
+                  emailExist ? "Enter your password" : "Create new password"
+                }`}
+                className="placeholder-gray-500 p-2 text-black "
+                // value={password}
+                onChange={validatePassword}
+              />
+            </span>
+            <span className="text-center">
+              {isPasswordValid || emailExist ? null : (
+                <span>
+                  Password must contain at least 8 characters. <br />
+                  Password must contain at least one uppercase letter.
+                </span>
+              )}
+            </span>
+          </>
         )}
         {loading ? (
           <BounceLoader color="green" />

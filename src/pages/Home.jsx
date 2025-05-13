@@ -5,6 +5,8 @@ import { GoStar, GoStarFill } from "react-icons/go";
 import { useNavigate } from "react-router";
 import { getCategoryColor, getLevelColor } from "../utils/ColorChange";
 import { ThemeContext } from "../Context/ThemeContext.jsx";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function Home() {
   const [loading, setLoading] = useState(true);
@@ -24,6 +26,7 @@ function Home() {
         const res = await axios.get(
           `https://challengeme-server-ra24.onrender.com/api/v1/challenges`
         );
+
         console.log("API Response:", res.data.data);
         setChallenges([...res.data.data].reverse());
       } catch (error) {
@@ -33,6 +36,7 @@ function Home() {
       }
     };
     challengeData();
+    AOS.init({ duration: 1000 });
   }, []);
 
   if (loading) {
@@ -51,17 +55,22 @@ function Home() {
   };
 
   return (
-    <div className={` px-4 mt-13 mb-9 ${
+    <div
+      className={` px-4 mt-13 mb-20 ${
         theme === "dark" ? "bg-[#292929]" : "bg-[#FFFAF0]"
-      }`}>
+      }`}
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {challenges.map((challenge) => (
           <div
             key={challenge._id}
             onClick={() => handleClick(challenge._id)}
+            data-aos="zoom-in"
             className={` border-b-[2px] py-4 ${
-        theme === "dark" ? "bg-[#292929] shadow-sm  border-[#DCDCDC]" : "bg-[FFFAF0] text-[#292929] border-[#292929]"
-      }`}
+              theme === "dark"
+                ? "bg-[#292929] shadow-sm  border-[#DCDCDC]"
+                : "bg-[FFFAF0] text-[#292929] border-[#292929]"
+            }`}
           >
             <img
               src={challenge.imageUrl}

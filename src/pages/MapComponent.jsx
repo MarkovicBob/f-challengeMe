@@ -3,9 +3,10 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import axios from "axios";
 import mapboxgl from "mapbox-gl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSubCategoryColor } from "../utils/ColorChange.js";
+import { ThemeContext } from "../Context/ThemeContext.jsx";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -27,6 +28,8 @@ const MapComponent = ({
     const theme = localStorage.getItem("theme") || "dark";
     return theme === "dark" ? "dark-v11" : "outdoors-v12";
   });
+
+  const { theme } = useContext(ThemeContext);
 
   const addMarkersToMap = () => {
     if (!map.current || !locations.length || !challenges.length) return;
@@ -232,7 +235,13 @@ const MapComponent = ({
             <button
               key={style}
               onClick={() => changeMapStyle(style)}
-              className={`style-button ${mapStyle === style ? "active" : ""}`}
+              className={`style-button ${
+                mapStyle === style
+                  ? theme === "dark"
+                    ? "active "
+                    : "bg-map-btn--light"
+                  : ""
+              } `}
             >
               {style.split("-")[0]}
             </button>
