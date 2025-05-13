@@ -142,6 +142,10 @@ input::placeholder {
   display: none;
 }
 
+.challenge {
+  margin-top: 54px;
+}
+
 .style-controls {
   color: #42a200;
   background: rgba(255, 255, 255, 0.9);
@@ -171,6 +175,16 @@ input::placeholder {
 }
 
 /* #42a200 */
+
+.tab:not(
+    :checked,
+    label:has(:checked),
+    :hover,
+    .tab-active,
+    [aria-selected="true"]
+  ) {
+  color: gray;
+}
 
 .style-button:hover {
   transform: translateY(-1px);
