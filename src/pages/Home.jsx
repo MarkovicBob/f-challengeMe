@@ -1,9 +1,10 @@
 import StarButton from "../components/StarButton";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { GoStar, GoStarFill } from "react-icons/go";
 import { useNavigate } from "react-router";
 import { getCategoryColor, getLevelColor } from "../utils/ColorChange";
+import { ThemeContext } from "../Context/ThemeContext.jsx";
 
 function Home() {
   const [loading, setLoading] = useState(true);
@@ -12,7 +13,7 @@ function Home() {
   // const [filled, setFilled] = useState(false);
   // const [filledStars, setFilledStars] = useState({});
   const navigate = useNavigate();
-
+  const { theme } = useContext(ThemeContext);
   const handleClick = (id) => {
     navigate(`/start/home/${id}`);
   };
@@ -50,13 +51,17 @@ function Home() {
   };
 
   return (
-    <div className="p-4 mt-13 mb-9 bg-[#292929]">
+    <div className={` p-4 mt-13 mb-9 ${
+        theme === "dark" ? "bg-[#292929]" : "bg-[#FFFAF0]"
+      }`}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {challenges.map((challenge) => (
           <div
             key={challenge._id}
             onClick={() => handleClick(challenge._id)}
-            className="border-b-[2px] border-[#DCDCDC] p-4 rounded shadow-sm"
+            className={` border-b-[2px] p-4 rounded ${
+        theme === "dark" ? "bg-[#292929] shadow-sm  border-[#DCDCDC]" : "bg-[FFFAF0] text-[#292929] border-[#292929]"
+      }`}
           >
             <img
               src={challenge.imageUrl}

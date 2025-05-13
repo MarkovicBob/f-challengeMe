@@ -14,7 +14,7 @@ export const getCategoryColor = (Category) => {
 export const getLevelColor = (Level) => {
   switch (Level) {
     case "Easy":
-      return "bg-[#F5F5F5] text-black";
+      return "bg-[#EDEDED] text-black";
     case "Medium":
       return "bg-[#8B8B83] text-white";
     case "Difficult":

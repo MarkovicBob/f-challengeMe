@@ -35,7 +35,7 @@ function Navbar() {
         className={`flex items-center w-full fixed top-[-1px] z-50 border-b-[2px] ${
           theme === "dark"
             ? "text-white bg-[#292929] border-[#686565]"
-            : "text-black bg-white border-[#ccc]"
+            : "text-black bg-[#FFFAF0] border-[#ccc]"
         }`}
       >
         <div className="ml-3 mt-2 mb-2">

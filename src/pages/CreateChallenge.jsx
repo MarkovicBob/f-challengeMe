@@ -302,7 +302,7 @@ function CreateChallenge() {
   return (
     <div
       className={`flex flex-col h-[100vh] items-center justify-start mt-15 ${
-        theme === "dark" ? "bg-[#292929]" : "bg-white"
+        theme === "dark" ? "bg-[#292929]" : "bg-[#FFFAF0]"
       }`}
     >
       <form
@@ -335,13 +335,13 @@ function CreateChallenge() {
         </p> */}
 
         <select
-          name="category"
-          value={category}
-          className={`select p-2 ${getCategoryColor(
-            category
-          )} } rounded-md mt-4 w-full `}
-          onChange={handleCategory}
-        >
+  name="category"
+  value={category}
+  className={`select p-2 rounded-md mt-4 w-full ${getCategoryColor(category)} ${
+    theme === "dark" ? "bg-[#292929]" : "bg-[#FFFAF0]"
+  }`}
+  onChange={handleCategory}
+>
           <option value="" disabled>
             Pick a category
           </option>
