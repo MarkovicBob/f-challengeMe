@@ -1,12 +1,13 @@
 import MapComponent from "./MapComponent";
 import StarButton from "../components/StarButton";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaRepeat } from "react-icons/fa6";
 import { GiDuration } from "react-icons/gi";
 import { LuCoins } from "react-icons/lu";
 import { useParams } from "react-router";
 import { toast } from "react-toastify";
+import { ThemeContext } from "../Context/ThemeContext.jsx";
 
 import {
   getCategoryColor,
@@ -22,6 +23,7 @@ function ChallengeDetail() {
   const [showDescription, setShowDescription] = useState(false);
   const [challengeStarted, setChallengeStarted] = useState(false);
   const [challengeCompleted, setChallengeCompleted] = useState(false);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -106,7 +108,9 @@ function ChallengeDetail() {
   if (!challenge) return <p className="mt-15">Challenge not found</p>;
 
   return (
-    <div className="challenge mt-20 h-[100vh] flex flex-col">
+    <div className={` challenge mt-20 h-[100vh] flex flex-col ${
+        theme === "dark" ? "bg-[#292929]" : "bg-[#FFFAF0] text-[#292929]"
+      }`}>
       <div className="w-full mb-3 overflow-hidden">
         {coordinates.length > 0 && coordinates[0]?.length === 2 ? (
           <MapComponent
@@ -191,7 +195,9 @@ function ChallengeDetail() {
 
         <button
           onClick={toggleDescription}
-          className="bg-gray-500 rounded-md p-2 mb-10"
+          className={`rounded-md p-2 mb-10 ${
+        theme === "dark" ? "bg-gray-500" : "bg-gray-300"
+      }`}
         >
           {showDescription ? "Show Less" : "View Full Description"}
         </button>

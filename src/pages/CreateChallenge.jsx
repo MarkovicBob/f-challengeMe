@@ -335,13 +335,17 @@ function CreateChallenge() {
         </p> */}
 
         <select
-  name="category"
-  value={category}
-  className={`select p-2 rounded-md mt-4 w-full ${getCategoryColor(category)} ${
-    theme === "dark" ? "bg-[#292929]" : "bg-[#FFFAF0]"
-  }`}
-  onChange={handleCategory}
->
+          name="category"
+          value={category}
+          className={`select select-info p-2 rounded-md mt-4 w-full ${
+            category
+              ? getCategoryColor(category)
+              : theme === "dark"
+              ? "bg-[#292929]"
+              : "bg-white text-[#292929]"
+          }`}
+          onChange={handleCategory}
+        >
           <option value="" disabled>
             Pick a category
           </option>
@@ -369,11 +373,21 @@ function CreateChallenge() {
         <select
           name="sub-category"
           value={subCategory}
-          className={`select placeholder-gray-500 p-2 rounded-md mt-4 w-full ${getSubCategoryColor(
-            subCategory
-          )}`}
           onChange={(e) => setSubCategory(e.target.value)}
           disabled={!subCategoryOptions.length}
+          className={`select placeholder-gray-500 p-2 rounded-md mt-4 w-full
+    ${
+      !subCategoryOptions.length
+        ? theme === "dark"
+          ? "!bg-[#1f1f1f] !text-gray-500 !cursor-not-allowed"
+          : "!bg-[#f0f0f0] !text-gray-500 !cursor-not-allowed"
+        : subCategory
+        ? getSubCategoryColor(subCategory)
+        : theme === "dark"
+        ? "bg-[#292929] text-white"
+        : "bg-white text-black"
+    }
+  `}
         >
           <option value="" disabled>
             Pick a subcategory
@@ -443,7 +457,7 @@ function CreateChallenge() {
             type="submit"
             className="
             w-full h-30 px-4 py-2 rounded-md cursor-pointer mt-15 mb-16
-            flex flex-col justify-center items-center bg-[#42a200]"
+            flex flex-col justify-center items-center bg-[#42a200] active:inset-ring-2"
           >
             Open Your New AI Challenge
           </button>
@@ -453,7 +467,7 @@ function CreateChallenge() {
               type="button"
               className="w-full h-30 px-4 py-2 rounded-md cursor-pointer mt-15 mb-16
     flex flex-col justify-center items-center
-   bg-blue-500"
+   bg-blue-500 active:inset-ring-2"
               onClick={handleAutoGenerate}
               disabled={loading}
             >

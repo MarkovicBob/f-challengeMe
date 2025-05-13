@@ -51,7 +51,7 @@ function Home() {
   };
 
   return (
-    <div className={` p-4 mt-13 mb-9 ${
+    <div className={` px-4 mt-13 mb-9 ${
         theme === "dark" ? "bg-[#292929]" : "bg-[#FFFAF0]"
       }`}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -59,7 +59,7 @@ function Home() {
           <div
             key={challenge._id}
             onClick={() => handleClick(challenge._id)}
-            className={` border-b-[2px] p-4 rounded ${
+            className={` border-b-[2px] py-4 ${
         theme === "dark" ? "bg-[#292929] shadow-sm  border-[#DCDCDC]" : "bg-[FFFAF0] text-[#292929] border-[#292929]"
       }`}
           >

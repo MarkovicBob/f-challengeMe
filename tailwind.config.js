@@ -1,8 +1,25 @@
+import daisyui from "daisyui";
+import { themes } from "daisyui/src/theming/themes.js";
+
 export default {
-  darkMode: "class",
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  plugins: [daisyui],
+
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "primary-muted": "oklch(var(--primary-muted) / <alpha-value>)",
+      },
+    },
   },
-  plugins: [],
+
+  daisyui: {
+    themes: [
+      {
+        light: {
+          ...themes.light,
+          "--primary-muted": "65% 0.2 295",
+        },
+      },
+    ],
+  },
 };
