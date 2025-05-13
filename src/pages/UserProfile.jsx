@@ -278,27 +278,31 @@ function UserProfile() {
         />
         <div className="tab-content">
           <ul>
-            {userData.activeList.map((challenge) => (
-              <li
-                key={challenge._id}
-                className="flex flex-row gap-4 justify-between mt-2"
-              >
-                <span
-                  className={`${getSubCategoryColor(
-                    challenge.challengeRefId.challengeSubCategory
-                  )} basis-2/3 text-m flex items-center justify-start pl-1.5 rounded-sm`}
-                >
-                  {challenge.challengeRefId.challengeTitle}
-                </span>
-                <span
-                  className={`${getLevelColor(
-                    challenge.challengeRefId.standardLevel
-                  )} basis-1/3 text-m flex items-center justify-start pl-1.5 rounded-sm`}
-                >
-                  {challenge.challengeRefId.standardLevel}
-                </span>
-              </li>
-            ))}
+            {userData.activeList.map((challenge) => {
+              if (challenge.status === "in-progress") {
+                return (
+                  <li
+                    key={challenge._id}
+                    className="flex flex-row gap-4 justify-between mt-2"
+                  >
+                    <span
+                      className={`${getSubCategoryColor(
+                        challenge.challengeRefId.challengeSubCategory
+                      )} basis-2/3 text-m flex items-center justify-start pl-1.5 rounded-sm`}
+                    >
+                      {challenge.challengeRefId.challengeTitle}
+                    </span>
+                    <span
+                      className={`${getLevelColor(
+                        challenge.challengeRefId.standardLevel
+                      )} basis-1/3 text-m flex items-center justify-start pl-1.5 rounded-sm`}
+                    >
+                      {challenge.challengeRefId.standardLevel}
+                    </span>
+                  </li>
+                );
+              }
+            })}
           </ul>
         </div>
 
