@@ -3,6 +3,10 @@ import { useEffect, useState, useRef } from "react";
 import { useContext } from "react";
 import { ThemeContext } from "../Context/ThemeContext";
 import { getSubCategoryColor, getLevelColor } from "../utils/ColorChange";
+import { FaCheck } from "react-icons/fa6";
+import { PiClockCountdownBold } from "react-icons/pi";
+import { RiBookmark3Fill, RiBookmark3Line } from "react-icons/ri";
+import { toast } from "react-toastify";
 
 function UserProfile() {
   const [userData, setUserData] = useState({
@@ -113,8 +117,10 @@ function UserProfile() {
         inputRef.current.value = null;
       }
       setPreviewUrl("");
+      toast.success("Profile picture updated successfully.");
     } catch (error) {
       console.error("Upload failed:", error);
+      toast.error("Upload failed:", error);
       setError(error.response?.data?.message || "Upload failed");
     } finally {
       setLoading(false);
@@ -125,7 +131,10 @@ function UserProfile() {
     <div className="container mt-[6rem]">
       <div className="flex flex-row gap-8 justify-between px-8 mt-4">
         <div className="flex flex-col items-center">
-          <div className="avatar avatar-placeholder">
+          <div
+            className="avatar avatar-placeholder"
+            onClick={() => inputRef.current && inputRef.current.click()}
+          >
             <div className="bg-neutral w-24 rounded-full">
               {previewUrl || userData.profilePictureUrl ? (
                 <img
@@ -152,15 +161,11 @@ function UserProfile() {
               onChange={handleInputChange}
               ref={inputRef}
               accept="image/*"
-              className="file-input file-input-bordered w-full max-w-xs"
+              className="hidden"
             />
             {selectedImage && (
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={loading}
-              >
-                {loading ? "Uploading..." : "Upload Profile Picture"}
+              <button type="submit" className="btn" disabled={loading}>
+                {loading ? "Uploading..." : "Upload"}
               </button>
             )}
           </form>
@@ -232,9 +237,19 @@ function UserProfile() {
             </svg>
           </label> */}
           <ul>
-            <li>{userData.favoriteList.length} Favourite</li>
-            <li>{userData.activeList.length} Active</li>
-            <li>{userData.stats.challengesCompleted} Completed</li>
+            <li className="flex">
+              <RiBookmark3Line className="mr-2 mt-[0.25rem]" />
+              {userData.favoriteList.length} Favourite
+            </li>
+            <li className="flex">
+              {" "}
+              <PiClockCountdownBold className="mr-2 mt-[0.28rem]" />
+              {userData.activeList.length} Active
+            </li>
+            <li className="flex">
+              <FaCheck className="mr-2 mt-[0.25rem]" />
+              {userData.stats.challengesCompleted} Completed
+            </li>
           </ul>
         </div>
       </div>
