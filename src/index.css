@@ -43,8 +43,21 @@
   height: 40px;
 }
 
+input::placeholder {
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  /* color: #888;
+  font-size: 14px; */
+}
+
 .mapboxgl-ctrl-geocoder.mapboxgl-ctrl {
   top: 20px;
+  box-shadow: none !important;
+  border-radius: 0.375rem !important;
+  border-color: oklch(23.26% 0.014 253.1) !important;
+  background-color: #f0f0f0 !important;
+  color: oklch(55.1% 0.027 264.364) !important;
+  font-family: sans-serif !important;
 }
 
 .mapboxgl-ctrl-geocoder.mapboxgl-ctrl + .mapboxgl-ctrl-geocoder.mapboxgl-ctrl {
@@ -143,14 +156,21 @@
   padding: 8px 15px;
   border: none;
   border-radius: 4px;
-  background: #eee9e9;
+  background: #d6d3d3;
   transition: all 0.2s;
 }
 
 .style-button.active {
-  background: #42a200;
+  background: #292929;
   color: white;
 }
+
+.bg-map-btn--light {
+  background-color: #42a200 !important;
+  color: white;
+}
+
+/* #42a200 */
 
 .style-button:hover {
   transform: translateY(-1px);

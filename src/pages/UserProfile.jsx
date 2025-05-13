@@ -29,6 +29,8 @@ function UserProfile() {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
+  console.log(theme);
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -181,19 +183,19 @@ function UserProfile() {
 
         <div className="stats flex flex-col">
           <div className="flex justify-end px-4">
-            <button
+            {/* <button
               onClick={toggleTheme}
               className="px-4 py-2 rounded-md border text-sm shadow-sm mt-2
       dark:bg-[#333] dark:text-white dark:border-[#555]
       bg-white text-black border-gray-400"
             >
               Switch to {theme === "dark" ? "🌞 Light Mode" : "🌙 Dark Mode"}
-            </button>
+            </button> */}
           </div>
-          {/* <label className="toggle theme-controller text-base-content mt-4 w-15 h-9">
+          <label className="toggle theme-controller text-base-content mt-4 w-15 h-9">
             <input
               type="checkbox"
-              checked={localStorage.getItem("theme" === "dark")}
+              checked={theme === "dark"}
               onChange={toggleTheme}
               className="theme-controller "
             />
@@ -235,7 +237,7 @@ function UserProfile() {
                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
               </g>
             </svg>
-          </label> */}
+          </label>
           <ul>
             <li className="flex">
               <RiBookmark3Line className="mr-2 mt-[0.25rem]" />
