@@ -57,6 +57,13 @@ function Welcome() {
       toast.warning("Password field is empty");
       return;
     }
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      toast.warning(
+        "Password must be at least 8 characters, include one uppercase letter and one number"
+      );
+      return;
+    }
     setLoading(true);
     try {
       if (emailExist) {
@@ -108,9 +115,10 @@ function Welcome() {
   };
 
   const validatePassword = (e) => {
-    const passwordRegex = /^(?=.*[A-Z]).{8,}$/;
-    if (passwordRegex.test(e.target.value)) {
-      setPassword(e.target.value);
+    const value = e.target.value;
+    setPassword(value);
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (passwordRegex.test(value)) {
       setIsPasswordValid(true);
     } else {
       setIsPasswordValid(false);

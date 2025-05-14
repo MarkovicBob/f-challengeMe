@@ -19,7 +19,11 @@ import { ToastContainer } from "react-toastify";
 function App() {
   return (
     <>
-      <ToastContainer position="top-center" />
+      <ToastContainer
+        position="top-center"
+        pauseOnHover="false"
+        pauseOnFocusLoss="false"
+      />
       <Routes>
         <Route
           path="/start"
