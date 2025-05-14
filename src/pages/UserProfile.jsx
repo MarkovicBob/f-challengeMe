@@ -91,7 +91,7 @@ function UserProfile() {
       setError("");
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/users/${userId}/profile-picture`,
+        `https://challengeme-server-ra24.onrender.com/api/v1/users/${userId}/profile-picture`,
         formData,
         {
           headers: {
