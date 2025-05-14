@@ -29,8 +29,6 @@ function UserProfile() {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
-  console.log(theme);
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -43,8 +41,6 @@ function UserProfile() {
           }
         );
 
-        console.log(response.data);
-
         setUserData({
           email: response.data.data.email,
           favoriteList: response.data.data.favoriteList,
@@ -55,7 +51,7 @@ function UserProfile() {
           profilePictureUrl: response.data.data.profilePictureUrl || "",
         });
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        // console.error("Error fetching user data:", error);
         setError("Failed to fetch user data");
       }
     };
@@ -105,7 +101,7 @@ function UserProfile() {
         }
       );
 
-      console.log(response.data);
+      // console.log(response.data);
 
       // Update user data with new profile picture
       setUserData((prevData) => ({
@@ -121,8 +117,11 @@ function UserProfile() {
       setPreviewUrl("");
       toast.success("Profile picture updated successfully.");
     } catch (error) {
-      console.error("Upload failed:", error);
-      toast.error("Upload failed:", error);
+      // console.error("Upload failed:", error);
+      toast.error(
+        "Sorry, the file you tried to upload is too large. Max size: 5 MB:",
+        error
+      );
       setError(error.response?.data?.message || "Upload failed");
     } finally {
       setLoading(false);
@@ -171,16 +170,27 @@ function UserProfile() {
             />
 
             {selectedImage && (
-              <button type="submit" className="btn" disabled={loading}>
+              <button
+                type="submit"
+                className="btn bg-[#8B8989] border-0 shadow-none cursor-pointer active:inset-ring-2"
+                disabled={loading}
+              >
                 {loading ? "Uploading..." : "Upload"}
               </button>
+
+              /* background-color: #8B8989;
+    border: none;
+    box-shadow: none; */
             )}
           </form>
           <span className="">{userData.email}</span>
 
           {error && <div className="text-red-500 mt-2">{error}</div>}
 
-          <button className="btn mt-4 btn-m" onClick={logout}>
+          <button
+            className="btn mt-4 btn-m bg-[#8B8989] border-0 shadow-none cursor-pointer active:inset-ring-2"
+            onClick={logout}
+          >
             Logout
           </button>
         </div>

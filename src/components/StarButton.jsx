@@ -13,10 +13,10 @@ const StarButton = ({ challengeId, disabled }) => {
       const status = await isFavorited(challengeId);
       setFavorited(status);
     } catch (err) {
-      console.error(
-        "An error occurred while checking your favorites. Please try again later.",
-        err
-      );
+      // console.error(
+      //   "An error occurred while checking your favorites. Please try again later.",
+      //   err
+      // );
     } finally {
       setLoading(false);
     }
@@ -45,7 +45,7 @@ const StarButton = ({ challengeId, disabled }) => {
       );
     } catch (err) {
       if (err.response?.status !== 409) {
-        console.error("Failed:", err);
+        // console.error("Failed:", err);
       }
     } finally {
       await fetchFavoriteStatus();

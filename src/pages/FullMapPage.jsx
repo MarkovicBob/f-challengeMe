@@ -10,7 +10,9 @@ const FullMapPage = () => {
         const coords = [pos.coords.longitude, pos.coords.latitude];
         setUserLocation(coords);
       },
-      (err) => console.error("Geolocation error:", err)
+      (err) => {
+        // console.error("Geolocation error:", err)
+      }
     );
   }, []);
 

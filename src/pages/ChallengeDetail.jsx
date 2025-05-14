@@ -8,6 +8,8 @@ import { LuCoins } from "react-icons/lu";
 import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import { ThemeContext } from "../Context/ThemeContext.jsx";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 import {
   getCategoryColor,
@@ -44,11 +46,12 @@ function ChallengeDetail() {
           setChallengeCompleted(true);
         }
       } catch (error) {
-        console.error("Error fetching challenge:", error);
+        // console.error("Error fetching challenge:", error);
       } finally {
         setLoading(false);
       }
     };
+    AOS.init({ duration: 1000 });
     fetchChallenge();
   }, [id]);
 
@@ -72,7 +75,7 @@ function ChallengeDetail() {
       if (err.response?.status === 409) {
         toast.error("Challenge already started.");
       } else {
-        console.error("Error starting challenge", err);
+        // console.error("Error starting challenge", err);
       }
     }
   };
@@ -97,7 +100,7 @@ function ChallengeDetail() {
       if (err.response?.status === 409) {
         toast.error("Challenge already completed.");
       } else {
-        console.error("Error completing challenge", err);
+        // console.error("Error completing challenge", err);
       }
     }
   };
@@ -176,7 +179,7 @@ function ChallengeDetail() {
       <div className="flex flex-col justify-around text-center p-4 gap-4 mt-5">
         <button
           onClick={handleStartChallenge}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 cursor-pointer active:inset-ring-2"
           disabled={challengeStarted || challengeCompleted}
         >
           {challengeCompleted
@@ -189,26 +192,38 @@ function ChallengeDetail() {
         {challengeStarted && !challengeCompleted && (
           <button
             onClick={handleCompleteChallenge}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 cursor-pointer active:inset-ring-2"
           >
             Complete
           </button>
         )}
 
-        <button
+        {/* <button
           onClick={toggleDescription}
-          className={`rounded-md p-2 mb-10 ${
+          className={`rounded-md p-2 mb-2 cursor-pointer active:inset-ring-2 ${
             theme === "dark" ? "bg-gray-500" : "bg-gray-300"
           }`}
         >
           {showDescription ? "Show Less" : "View Full Description"}
-        </button>
-
-        {showDescription && (
-          <div className="challenge-description mb-15">
-            <p>{challenge.challengeDescription}</p>
+        </button> */}
+        {/* Daisy */}
+        <div className="bg-base-100  collapse  mb-32">
+          <input type="checkbox" className="peer" onClick={toggleDescription} />
+          <div className="collapse-title bg-green-600 text-white peer-checked:bg-gray-500 peer-checked:text-secondary-content ">
+            {showDescription ? "Show Less" : "View Full Description"}
           </div>
-        )}
+          <div className="collapse-content bg-primary text-primary-content peer-checked:bg-gray-500  ">
+            <p className="pt-4">{challenge.challengeDescription}</p>
+          </div>
+        </div>
+        {/* Daisy */}
+        {/* {showDescription && (
+          <div data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <div className="challenge-description mb-15">
+              <p>{challenge.challengeDescription}</p>
+            </div>
+          </div>
+        )} */}
       </div>
     </div>
   );
