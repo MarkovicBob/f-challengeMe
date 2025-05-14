@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+html.dark {
+  background-color: #292929;
+}
+
+html:has(.light-theme) {
+  background-color: #fffaf0;
+}
+
 .active svg {
   fill: orange;
 }

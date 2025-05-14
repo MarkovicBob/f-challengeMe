@@ -233,7 +233,12 @@ function UserProfile() {
             <li className="flex">
               {" "}
               <PiClockCountdownBold className="mr-2 mt-[0.28rem]" />
-              {userData.activeList.length} Active
+              {
+                userData.activeList.filter((challenge) => {
+                  return challenge.status === "in-progress";
+                }).length
+              }{" "}
+              Active
             </li>
             <li className="flex">
               <FaCheck className="mr-2 mt-[0.25rem]" />

@@ -57,7 +57,7 @@ function Home() {
   return (
     <div
       className={` px-4 mt-13 mb-20 ${
-        theme === "dark" ? "bg-[#292929]" : "bg-[#FFFAF0]"
+        theme === "dark" ? "bg-[#292929]" : "bg-[#FFFAF0] light-theme"
       }`}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
