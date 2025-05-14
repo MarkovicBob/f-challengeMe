@@ -55,7 +55,7 @@ const MapComponent = ({
           lat < -90 ||
           lat > 90
         ) {
-          console.warn("Invalid coordinates for marker", lngLat);
+          // console.warn("Invalid coordinates for marker", lngLat);
           return;
         }
 
@@ -86,7 +86,7 @@ const MapComponent = ({
           .setPopup(new mapboxgl.Popup({ offset: 25 }).setDOMContent(popupNode))
           .addTo(map.current);
       } catch (e) {
-        console.error("Marker error:", e);
+        // console.error("Marker error:", e);
       }
     });
   };
@@ -190,7 +190,7 @@ const MapComponent = ({
         setLocations(extractedLocations);
         setChallenges(res.data.data);
       } catch (error) {
-        console.error("Fetching error", error);
+        // console.error("Fetching error", error);
       } finally {
         setLoading(false);
       }
@@ -219,7 +219,7 @@ const MapComponent = ({
     ) {
       center = [coordinates.lng, coordinates.lat];
     } else {
-      console.error("Invalid coordinates format", coordinates);
+      // console.error("Invalid coordinates format", coordinates);
       return;
     }
 

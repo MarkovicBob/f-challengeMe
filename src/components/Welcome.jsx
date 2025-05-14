@@ -42,7 +42,7 @@ function Welcome() {
         setEmailExist(false);
       }
     } catch (error) {
-      console.error("Error by checking email", error);
+      // console.error("Error by checking email", error);
       toast.error("Server error. Please try again later");
       setEmailExist(false);
     } finally {
@@ -51,7 +51,7 @@ function Welcome() {
   };
 
   const handleLoginOrSignup = async (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
 
     if (password.trim() === "") {
       toast.warning("Password field is empty");
@@ -83,7 +83,7 @@ function Welcome() {
           }
         );
         localStorage.setItem("token", res.data.token);
-        console.log(res.data);
+        // console.log(res.data);
         const userId = res.data?.userObject?._id;
         localStorage.setItem("userId", userId);
         toast.success("Account created successfully!");
@@ -92,7 +92,7 @@ function Welcome() {
         }, 1500);
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       // Проверяем статус ошибки
       if (error.response?.status === 500) {
         toast.error("Wrong Password - please try again.");

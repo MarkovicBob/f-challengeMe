@@ -146,6 +146,10 @@ input::placeholder {
   margin-top: 54px;
 }
 
+.collapse {
+  border-radius: 5px;
+}
+
 .style-controls {
   color: #42a200;
   background: rgba(255, 255, 255, 0.9);
